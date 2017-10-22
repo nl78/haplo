@@ -1,0 +1,19 @@
+#
+# $Id: solver_0.hpl,v 1.2 2003/08/30 13:45:21 nicoo Exp $
+#
+
+use("fem");
+A=matrix();
+b=vector();
+x=vector();
+
+x=solve(A, b);
+
+print(A);
+
+print(x);
+
+assert(norm(A*x-b)< 1.e-6);
+quit;
+
+###1

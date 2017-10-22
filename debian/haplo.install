@@ -1,0 +1,6 @@
+debian/tmp/usr/bin/*
+debian/tmp/share/*
+debian/tmp/usr/lib/lib*.so.*
+debian/tmp/usr/lib/haplo/*.so.*
+debian/tmp/usr/include/*
+debian/tmp/usr/lib/pkgconfig/*

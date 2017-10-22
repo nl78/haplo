@@ -1,0 +1,427 @@
+/*
+ * Copyright (C) 1998-2004 Nicolas LAURENT
+ * This file is part of `Haplo'
+ * 
+ *
+ * `Haplo'  is free software;  you can  redistribute  it and/or modify it
+ * under the terms of the GNU Library General Public License as published
+ * by the Free Software Foundation;  either version 2  of the License, or
+ * (at your option) any later version.
+ *
+ * `Haplo' is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the  implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the  GNU General Public License
+ * for more details.
+ * 
+ * You should have  received  a copy of the   GNU General Public  License
+ * along with `Haplo'.  If not, write to  the
+ *
+ *                                        Free Software Foundation,  Inc.
+ *                                        675 Mass Ave, Cambridge, MA
+ *                                        02139, USA.
+ *
+ */
+
+
+/**
+ * @file
+ * Code de traitement générique pour les tableaux associatif (hash).
+ * Ce fichier est inclut tel quel dans hash_*.c.
+ * 
+ * @warning il est impératif que toutes les fonctions implémentées dans ce
+ * fichier soient marquées "static".
+ *
+ * @see hash_str.c
+ * @see hash_ul.c
+ */
+
+
+/* La définition suivante est indispensable pour inclure "hash.h" */
+#define __HAPLO_HASH__
+#include <haplo/hash.h>
+
+#include "memory.h"
+#include "utils.h"
+
+/*-----------------------------------------------------------------------------
+                             P R O T O T Y P E S 
+-----------------------------------------------------------------------------*/
+
+static haplo_hash_t *haplo_hash_new(unsigned long size);
+static void haplo_hash_free(haplo_hash_t *hash);
+static haplo_hash_entry_t *hash_get(const haplo_hash_t *hash,
+				    const haplo_hash_key_t key);
+static void *haplo_hash_get(const haplo_hash_t *hash, const haplo_hash_key_t key);
+static void hash_reorder(haplo_hash_t *hash);
+static void *haplo_hash_set(haplo_hash_t *hash, const haplo_hash_key_t key,
+			    void *value);
+static void haplo_hash_loop(const haplo_hash_t *hash,
+			    haplo_hash_loop_fcn_t function,
+			    void *argument);
+static unsigned long haplo_hash_size(const haplo_hash_t *hash);
+static haplo_hash_key_t haplo_hash_search(const haplo_hash_t *hash,
+					  haplo_hash_search_fcn_t func,
+					  void *value);
+
+/*-----------------------------------------------------------------------------
+                         I M P L E M E N T A T I O N 
+-----------------------------------------------------------------------------*/
+
+/**
+ * Création d'un tableau associatif (hash) vide
+ *
+ * @return un pointeur sur un tableau associatif (hash) vide.
+ */
+static haplo_hash_t *haplo_hash_new(unsigned long size)
+{
+	haplo_hash_t *hash;
+
+	HAPLO_ALLOC(hash, 1);
+	if (hash)
+	{
+		unsigned long i;
+
+		/*
+		 * Allocations 
+		 */
+		hash->entry_allocator = haplo_list_new_size(
+			sizeof(haplo_hash_entry_t),
+			size);
+		if (!hash->entry_allocator)
+		{
+			HAPLO_FREE(hash);
+			return(NULL);
+		}
+
+		HAPLO_ALLOC(hash->entry, size);
+		if (!hash->entry)
+		{
+			haplo_list_free(hash->entry_allocator);
+			HAPLO_FREE(hash);
+			return(NULL);
+		}
+
+		/*
+		 * Initialisation
+		 */
+		for(i=0; i<size; i += 1)
+			hash->entry[i] = NULL;
+		 
+		hash->size=size;
+	}
+
+	return hash;
+}
+
+
+/**
+ * Libération d'un tableau associatif (hash).
+ *
+ * @param hash est un pointeur sur un tableau associatif (hash). Ce pointeur
+ *        doit être valide.
+ */
+static void haplo_hash_free(haplo_hash_t *hash)
+{
+	unsigned long i;
+
+	for(i=0; i<hash->size; i += 1)
+	{
+		haplo_hash_entry_t *entry;
+		haplo_hash_entry_t *next;
+
+		for(entry=hash->entry[i]; entry; entry=next)
+		{
+			next = entry->next;
+			HASH_KEY_FREE(entry->key);
+		}
+	}
+
+	haplo_list_free(hash->entry_allocator);
+	HAPLO_FREE(hash->entry);
+	HAPLO_FREE(hash);
+
+	return;
+}
+
+
+/**
+ * Recherche d'un couple clé/valeur à partir de la clé
+ *
+ * @param hash est un pointeur sur un tableau associatif (hash).
+ * @param key est la clé cherchée
+ * 
+ * @return un pointeur sur le couple ou NULL si non trouvé.
+ */
+static haplo_hash_entry_t *hash_get(const haplo_hash_t *hash,
+				  const haplo_hash_key_t key)
+{
+	haplo_hash_entry_t *entry;
+	unsigned long indice;
+
+	indice = hash_function(key, hash->size);
+
+	entry  = hash->entry[indice];
+
+	if (entry)
+	{
+		for(; entry; entry=entry->next)
+			if (HASH_KEY_EQ(entry->key, key))
+				return(entry);
+	}
+
+	return NULL;
+}
+
+
+/**
+ * Accéder à un élément à partir de la clé.
+ *
+ * @param hash est un pointeur sur un tableau associatif (hash). Ce pointeur
+ *        doit être valide.
+ * @param key est la clée d'accès.
+ *
+ * @return value est la valeur correspondante.
+ *
+ * @note on recupère un pointeur sur l'objet stocké. On peut donc le
+ * modifier.
+ */
+static void *haplo_hash_get(const haplo_hash_t *hash, const haplo_hash_key_t key)
+{
+	void *value=NULL;
+	haplo_hash_entry_t *entry;
+
+	entry=hash_get(hash, key);
+	if (entry)
+		value=entry->value;
+
+	return(value);
+}
+
+
+/**
+ * Réorganisation d'un tableau associatif (hash): l'espace des clés est doublé. Cela
+ * réduit les collisions.
+ *
+ * @param hash est un pointeur vers un tableau associatif (hash).
+ */
+static void hash_reorder(haplo_hash_t *hash)
+{
+	unsigned long i;
+	const unsigned long N=hash->size;
+	const unsigned long N2=N*2 + 1; /* pour avoir un nombre impaire */
+	haplo_hash_entry_t **new_entry;
+
+	/* Initialisation de la nouvelle table */
+	HAPLO_ALLOC(new_entry, N2);
+	for(i=0; i<N2; i++)
+		new_entry[i]=NULL;
+
+	/* insertion de l'ancienne dans la nouvelle */
+	for(i=0; i<N; i++)
+	{
+		haplo_hash_entry_t *e;
+		haplo_hash_entry_t *next;
+
+		for(e=hash->entry[i]; e; e=next)
+		{
+			unsigned long indice;
+			next=e->next;
+
+			indice=hash_function(e->key, N2);
+			e->next = new_entry[indice];
+			new_entry[indice]=e;
+		}
+	}
+
+	/* libération de l'ancienne et M-à-J */
+	HAPLO_FREE(hash->entry);
+	hash->entry = new_entry;
+	hash->size=N2;
+
+	return;
+}
+
+
+/**
+ * Ajoute une entrée dans un tableau associatif (hash)
+ *
+ * @param hash est un pointeur vers un tableau associatif (hash).
+ * @param key est la clée
+ * @param value est la valeur associée à la clée.
+ *
+ * @warning Si on appelle cette fonction sur une clée déjà existante,
+ * la mémoire pointée par l'ancienne valuer n'est pas libérée!
+ *
+ * @return un pointeur sur l'ancienne valeur.
+ */
+static void *haplo_hash_set(haplo_hash_t *hash, const haplo_hash_key_t key,
+			    void *value)
+{
+	void *oldvalue = NULL;
+	haplo_hash_entry_t *entry;
+
+	entry=hash_get(hash, key);
+
+	if (entry)
+	{
+		oldvalue = entry->value;
+		/* on écrase une entrée existante. */
+		entry->value = value;
+	} else {
+		unsigned collision=0;
+		unsigned long indice;
+
+		/* initialize new entry */
+		entry=haplo_list_append(hash->entry_allocator);
+
+		entry->value=value;
+		entry->key=HASH_KEY_COPY(key);
+		
+		/* insert new entry */
+		indice = hash_function(key, hash->size);
+		entry->next=hash->entry[indice];		
+		hash->entry[indice]=entry;
+
+		/* calculate collision */
+		for(; entry->next; entry=entry->next)
+			collision += 1;
+
+		if (collision >= HASH_COLLISION_MAX)
+			hash_reorder(hash);
+	}
+
+	return oldvalue;
+}
+
+
+/**
+ * Parcours d'un tableau associatif (hash). Comme il n'y a pas de relation
+ * d'ordre dans ce type de table, on parcours les entrées dans l'ordre
+ * d'arrivée dans la table
+ *
+ * @param hash est un pointeur sur un tableau associatif (hash)
+ * @param function est un pointeur sur une fonction appelée pour chaque entrée
+ * @param argument est un pointeur passé à chaque appel de function
+ *
+ * @see haplo_hash_loop_fcn_t
+ * @see haplo_hash_str_loop
+ * @see haplo_hash_ul_loop
+ */
+static void haplo_hash_loop(const haplo_hash_t *hash, haplo_hash_loop_fcn_t function,
+			  void *argument)
+{
+	haplo_list_loop(hash->entry_allocator, 
+		      (haplo_list_loop_fcn_t)function,
+		      argument);
+	
+	return;
+}
+
+
+/**
+ * Obtenir le nombre d'entrées d'un tableau associatif (hash).
+ *
+ * @param hash est un 	pointeur sur un tableau associatif (hash)
+ *
+ * @return le nombre d'entrées de ce tableau
+ */	
+static unsigned long haplo_hash_size(const haplo_hash_t *hash)
+{
+	return(haplo_list_size(hash->entry_allocator));
+}
+
+
+struct haplo_hash_search_criterium_s
+{
+	haplo_hash_search_fcn_t func;
+	void *data;
+};
+
+
+static int haplo_hash_search_criterium(haplo_hash_entry_t *entry,
+				 struct haplo_hash_search_criterium_s *data)
+{
+	return data->func(entry->value, data->data);
+}
+
+/**
+ * Obtenir la clé à partir d'un critère de recherche sur la valeur
+ *
+ * @param hash est un 	pointeur sur un tableau associatif (hash)
+ * @param value est la valeur recherchée
+ * @param func est la fonction de comparaison
+ *
+ * @return la clé si trouvée
+ */
+static haplo_hash_key_t haplo_hash_search(const haplo_hash_t *hash,
+					  haplo_hash_search_fcn_t func,
+					  void *value)
+{
+	haplo_hash_entry_t *entry;
+	struct haplo_hash_search_criterium_s data;
+
+	data.func = func;
+	data.data = value;
+
+	entry = haplo_list_search(hash->entry_allocator,
+			(haplo_list_search_fcn_t)haplo_hash_search_criterium,
+                        &data);
+
+	if (entry)
+		return(entry->key);
+
+	return(0);
+}
+
+
+struct haplo_hash_copy_entry
+{
+	haplo_hash_copy_fcn_t	func;
+	void			*data;
+	haplo_hash_t 		*copy;
+};
+
+
+/**
+ * Copier une entrée.
+ *
+ * @param entry est l'entrée initial
+ * @param data est le pointeur sur les paramètre de la copie
+ */
+static void haplo_hash_copy_entry(haplo_hash_entry_t *entry,
+				  struct haplo_hash_copy_entry *data)
+{
+	haplo_hash_set(data->copy, entry->key, 
+		       data->func(entry->value, data->data));
+}
+
+
+/**
+ * Copier un tableau associatif
+ *
+ * @param hash est un pointeur sur le tableau initial
+ * @param func est un pointeur sur une fonction copiant une valeur
+ * @param data est un pointeur sur des données passées à la fonction de copie
+ *
+ * @return un pointeur sur le tableau copié
+ */ 
+static haplo_hash_t *haplo_hash_copy(const haplo_hash_t *hash,
+				     haplo_hash_copy_fcn_t func,
+				     void *data)
+{
+	haplo_hash_t *copy;
+	struct haplo_hash_copy_entry param;
+
+	copy = haplo_hash_new(haplo_list_size(hash->entry_allocator));
+
+	param.func = func;
+	param.copy = copy;
+	param.data = data;
+	
+	haplo_hash_loop(hash,
+			(haplo_hash_loop_fcn_t)haplo_hash_copy_entry,
+			&param);
+			
+	
+	return copy;
+}

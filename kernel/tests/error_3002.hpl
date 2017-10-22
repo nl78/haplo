@@ -1,0 +1,14 @@
+F=function(a)
+{
+	a+2;
+};
+
+F(1,2); # wrong number of argument
+
+F(); # wrong number of argument
+
+F(1); # OK
+
+
+
+quit;

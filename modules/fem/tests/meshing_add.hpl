@@ -1,0 +1,26 @@
+#
+# $Id: meshing_add.hpl,v 1.1 2003/08/30 21:17:03 nicoo Exp $
+#
+
+use("fem");
+
+m1=meshing(1);
+m2=meshing(1);
+
+node_add(m1, [1]);
+node_add(m2, [2]);
+
+mesh_add(m1, [1, 1]);
+mesh_add(m2, [1, 1]);
+mesh_add(m2, [1, 1]);
+
+mesh_add(m1, [1, 1, 1]);
+mesh_add(m2, [1, 1,1]);
+
+print(m1);
+print(m2);
+print(m1+m2);
+ 
+1;
+quit;
+###1

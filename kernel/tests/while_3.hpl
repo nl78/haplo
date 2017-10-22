@@ -1,0 +1,24 @@
+#
+# $Id: while_3.hpl,v 1.1 2001/12/05 00:20:10 nicoo Exp $
+#
+
+fact=function(n) {
+	result=1;
+	print("Calcul de fact("+n+") result="+result);
+	while(n>1)
+	{
+		print("result="+result+" n="+n);
+		result = result * n;
+		n=n-1;
+	}
+	result;
+};
+print(fact);
+fact(8);
+print(fact);
+
+if (! fact(6) == 720)
+	abort();
+
+quit;
+

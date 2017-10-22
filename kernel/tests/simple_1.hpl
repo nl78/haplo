@@ -1,0 +1,11 @@
+#
+# $Id: simple_1.hpl,v 1.2 2001/11/17 15:06:15 nicoo Exp $
+#
+
+a=function(b)
+{
+	b+2;
+};
+
+a(2);
+quit;

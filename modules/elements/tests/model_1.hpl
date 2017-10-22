@@ -1,0 +1,90 @@
+#
+# $Id: model_1.hpl,v 1.10 2004/02/16 18:34:19 nicoo Exp $
+#
+
+use("elements");
+
+#
+# Create a meshing
+#
+
+ma=meshing(1);
+
+N=6;
+node_add(ma, [0]);
+for(i = 1; i <= N; i = i+1)
+{
+	node_add(ma, [2*i]);
+	mesh_add(ma, [i, i+1]);
+}
+print(ma);
+
+#
+# Create a model from this meshing with default elements
+#
+mo=model(ma);
+#print(mo);
+
+#
+# Apply properties to theses elements
+#
+mat=material();
+set(mat, "E", 1);
+print(mat);
+
+pro=property();
+set(pro, "S", 1);
+print(pro);
+
+set(mo, mat);
+set(mo, pro);
+
+
+#
+# Boundary conditions
+#
+
+conditions=bc("DX1 = -1");
+print(conditions);
+
+#
+# Loading
+#
+load=force("FX" + (N+1) + "=1.0");
+print(load);
+
+#
+# Global Stiffness Matrix 
+#
+P=problem(mo, conditions, load);
+K=stiffness(P);
+
+profile(K);
+print(K);
+
+#
+# Display DOF
+#
+for(i=1; i <= dof(P); i=i+1)
+	print(i + " <-> " + dof(P, i));
+
+F=loading(P);
+print(F);
+
+
+#
+# Solve the linear system 
+#
+U=solve_ldlt(K, F);
+
+#
+# Display results
+#
+print(U);
+dx=get(U, dof(P, "DX" + (N+1)));
+
+result=(dx-1)/(N-1);
+
+assert(fabs(result-2) < 1e-6 );
+
+quit;

@@ -1,0 +1,24 @@
+#!/bin/sh
+
+srcdir=${1:-.}
+versionfile="$srcdir/VERSION"
+
+SCM=`bzr revno $srcdir 2>/dev/null | head -1`
+SAVED_SCM=`cat $versionfile 2>/dev/null`
+
+if test "x$SCM" = "x"; then
+	SCM=$SAVED_SCM
+else
+	echo $SCM > $versionfile
+fi
+
+echo "#define HAPLO_SCM \"$SCM\"" > build.h
+
+if [ ! -f .version ]
+then
+    echo 1 > .version
+else
+    expr 0`cat .version` + 1 1> .version 2>/dev/null
+fi
+
+echo "#define HAPLO_BUILD `cat .version`" >> build.h

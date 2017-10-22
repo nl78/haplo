@@ -1,0 +1,13 @@
+fact=function(n) {
+	print("n="+n);
+	if (n>1)
+		n*fact(n-1);
+	else
+		1;
+};
+
+if (! fact(4) == 24)
+	abort();
+
+quit;
+

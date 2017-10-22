@@ -1,0 +1,15 @@
+#
+# $Id: matrix_0.hpl,v 1.1 2002/07/23 19:08:44 nicoo Exp $
+#
+
+
+
+use("fem");
+A=matrix();
+b=vector();
+A*b;
+
+quit;
+
+###Vector (5)
+

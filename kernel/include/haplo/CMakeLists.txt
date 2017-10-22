@@ -1,0 +1,23 @@
+INSTALL(FILES 
+	      builtin.h
+	      code.h
+	      ${CMAKE_CURRENT_BINARY_DIR}/config.h
+	      cpp.h
+	      defs.h
+	      des.h
+	      error.h
+	      func.h
+	      hash.h
+	      hash_str.h
+	      hash_ul.h
+	      init.h
+	      list.h
+	      memory.h
+	      module.h
+	      object.h
+	      olist.h
+	      parser.h
+	      pool.h
+	      timer.h
+	      utils.h
+	 DESTINATION include/haplo)

@@ -1,0 +1,5 @@
+
+print(); #  'print' with no argument is not defined
+
+
+quit;

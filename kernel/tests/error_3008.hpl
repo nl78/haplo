@@ -1,0 +1,6 @@
+
+
+print(print("")); # result of 'print' cannot be printed!
+
+
+quit;

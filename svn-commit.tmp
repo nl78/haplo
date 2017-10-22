@@ -1,0 +1,17 @@
+Last
+--This line, and those below, will be ignored--
+
+M    doc/manual/haplo.lyx
+M    kernel/include/haplo/config.h.in
+M    kernel/tests/code.hpl
+M    modules/fem/include/fem/analysis.h
+M    modules/fem/src/bc.c
+M    modules/fem/src/element.c
+M    modules/fem/src/meshing.c
+M    modules/fem/src/problem.c
+M    modules/fem/src/solver.c
+M    modules/fem/src/solver.h
+M    modules/fem/src/vectorized.c
+M    modules/net/src/client.c
+M    modules/net/src/identity.c
+M    modules/net/src/server.c

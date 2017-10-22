@@ -1,0 +1,4 @@
+copyright = function() {
+	print("Copyright (c) 1998-2005 Nicolas LAURENT.");
+	print("All Rights Reserved.");
+};

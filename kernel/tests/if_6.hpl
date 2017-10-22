@@ -1,0 +1,14 @@
+#
+#
+#
+
+FUNC1=function(a){a+1;}; 
+FUNC2=function(x){if (x>5) FUNC1(x); else x;};
+
+FUNC2(2);
+FUNC1(5);
+FUNC2(6);
+
+quit;
+
+###7

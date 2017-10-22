@@ -1,0 +1,10 @@
+
+COND="coucou";
+
+if (COND)
+	print("TRUE");
+else
+	print("FALSE");
+
+
+quit;

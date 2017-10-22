@@ -1,0 +1,17 @@
+#
+# $Id: solver_ldlt.hpl,v 1.5 2003/08/30 13:45:21 nicoo Exp $
+#
+
+use("fem");
+
+N=20000;
+A=matrix(N);
+b=vector(N);
+x=solve_ldlt(A, b);
+
+norm(A*x-b);
+
+quit;
+
+###1
+

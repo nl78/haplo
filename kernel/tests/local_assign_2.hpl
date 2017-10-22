@@ -1,0 +1,17 @@
+#
+# $Id: local_assign_2.hpl,v 1.1 2001/12/05 00:20:10 nicoo Exp $
+#
+
+a=function(b)
+{
+	c=2;
+	{
+		c=b;
+	}
+};
+
+if (! (a(3) == 3))
+	abort();
+
+quit;
+

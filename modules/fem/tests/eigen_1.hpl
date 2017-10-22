@@ -1,0 +1,37 @@
+#
+# $Id: model_1.hpl,v 1.10 2004/02/16 18:34:19 nicoo Exp $
+#
+
+#    0.0148
+#    1.0183
+#   10.5897
+#   11.9612
+#   20.9160
+
+use("fem");
+
+
+K=matrix();
+print(K);
+
+M=id(size(K));
+print(M);
+
+E=eigen(K, M, 3);
+
+
+F1=getf(E, 1);
+V1=getv(E, 1);
+print(K*V1 - F1*V1);
+#assert(fabs(F1-0.0148) < 0.1);
+
+F2=getf(E, 2);
+#assert(fabs(F2-1.0183) < 0.1);
+
+F3=getf(E, 3);
+#assert(fabs(F3-10.5897) < 0.1);
+
+
+1;
+quit;
+###1

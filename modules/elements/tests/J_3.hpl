@@ -1,0 +1,136 @@
+use("elements");
+
+#
+# REF: J=23.561694490
+JREF=23.561694490;
+
+N  = 10;
+R1 = 1;
+R2 = 2;
+NR = 9;
+
+PI=atan(1)*4;
+
+alpha=2*PI/N;
+dr=(R2-R1)/(NR-1);
+
+MESHING=meshing(2);
+GROUP_INT=group_node();
+GROUP_EXT=group_node();
+
+Nnode=1;
+for(r=0; r<NR; r=r+1)
+{
+	R = R1 + r*dr;
+	for(i=0; i<N*(2^r); i=i+1)
+	{
+		A = i*alpha;
+
+		node_add(MESHING, Nnode, [ R *cos(A), R *sin(A) ]);
+		if (r==0) {
+			add(GROUP_INT, [Nnode]);
+		}
+
+		if (r==(NR-1)) {
+			add(GROUP_EXT, [Nnode]);
+		}
+
+		Nnode=Nnode+1;
+	}
+	alpha = alpha / 2;
+}
+
+
+Nnode=1;
+for(r=0; r<NR-1; r=r+1)
+{
+	Nfirst = Nnode;
+	print(Nfirst);
+	for(i=0; i<N*(2^r); i=i+1)
+	{
+		N1_1 = Nnode;
+		N2_1 = N1_1 + N*(2^r) + i ;
+		N1_2 = 0;
+		N2_3 = 0;
+		if (i < (N*(2^r)-1))
+		{
+			N1_2 = N1_1 +  1 ;
+			N2_3 = N1_2 + N*(2^r) + i + 1;
+		} else {
+			N1_2 = Nfirst;
+			N2_3 = N1_2 + N*(2^r);
+		}
+			
+		N2_2 = N2_1 + 1;
+
+		mesh_add(MESHING, [N1_1, N2_1, N2_2]);
+		mesh_add(MESHING, [N1_1, N2_2, N1_2]);
+		mesh_add(MESHING, [N1_2, N2_2, N2_3]);
+
+		Nnode=Nnode+1;
+	}
+}
+
+
+MESHING;
+#print(MESHING);
+#quit;
+
+renum(MESHING);
+
+MODEL=model(MESHING);
+surface(MODEL);
+PI*3;
+
+#quit;
+
+BC=bc(GROUP_INT, "DX=0") + bc(GROUP_EXT, "DX");
+
+
+lo=loading(group_mesh(MESHING), "FX=-2");
+
+#print(lo);
+
+#print(BC);
+PROBLEM=problem(MODEL, BC, lo);
+K=stiffness(PROBLEM);
+#profile(K);
+#print(K);
+F=loading(PROBLEM);
+
+phi=solve_ldlt(K, F);
+
+#print(GROUP_EXT);
+#print(GROUP_INT);
+
+bordered("Resultat sur la frontière R1");
+get(phi, dof(PROBLEM, "DX1"));
+get(phi, dof(PROBLEM, "DX2"));
+get(phi, dof(PROBLEM, "DX3"));
+
+bordered("Resultat sur la frontière R2");
+get(phi, dof(PROBLEM, "DX"+(Nnode-1)));
+get(phi, dof(PROBLEM, "DX"+(Nnode-2)));
+get(phi, dof(PROBLEM, "DX"+(Nnode-3)));
+
+
+f=function(r)
+{
+	-r*r/2+R1*R1/2;
+};
+
+
+f(R1);
+f(R2);
+
+bordered("Moment de torsion");
+surface(MODEL);
+PI*3;
+J=2*integrate(PROBLEM, phi, "DX");
+JREF;
+
+
+quit;
+###1
+
+

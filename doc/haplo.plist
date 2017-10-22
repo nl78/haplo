@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>CFBundleIconFile</key>
+    <string>haplo.icns</string>
+    
+    <key>OpenSourceProject</key>
+    <string>wxWidgets</string>
+
+    <key>OpenSourceVersion</key>
+    <string>2.8</string>
+
+    <key>OpenSourceWebsiteURL</key>
+    <string>http://www.wxpython.org/</string>
+
+    <key>OpenSourceCVS</key>
+    <string>cvs -d ':pserver:anoncvs@cvs.wxwidgets.org:/pack/cvsroots/wxwidgets' -q export -r wxPy_2_8_4_0 -d wxPython-src-2.8.4.0 wxWidgets</string>
+
+    <key>OpenSourceImportDate</key>
+    <string>2007-05-14</string>
+
+    <key>OpenSourceLicense</key>
+    <string>wxWindows Licence</string>
+
+    <key>OpenSourceLicenseFile</key>
+    <string>wxWidgets.txt</string>
+
+    <key>OpenSourceModifications</key>
+    <array>
+      <string>changes to build under XBS</string>
+      <string>uses dlfcn.h routines instead of NS* routines</string>
+    </array>	
+</dict>
+</plist>

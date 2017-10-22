@@ -1,0 +1,35 @@
+
+
+
+
+N1(a,b) := 1-a-b;
+N2(a,b) := a;
+N3(a,b) := b;
+
+X(a,b) := N1(a,b)*x1 + N2(a,b)*x2 + N3(a,b)*x3;
+Y(a,b) := N1(a,b)*Y1 + N2(a,b)*Y2 + N3(a,b)*Y3;
+
+
+J:matrix([ diff(X(a,b), a), diff(Y(a,b), a) ],
+         [ diff(X(a,b), b), diff(X(a,b), b) ]);
+
+
+j:invertmx(J);
+
+
+H:matrix([ H1, H2, 0 ],
+         [ H2, H1, 0 ],
+         [  0,  0, G ]);
+
+ 
+A:matrix([ j[1,1],      j[1,2],    0 ], 
+         [ j[2,1],      j[2,2],    0 ],
+	 [ j[2,1],      j[1,2], j[2,2] ]);
+	 
+
+Ba:matrix([ diff(N1(a,b), a),           0, diff(N2(a,b), a),           0, diff(N3(a,b), a),           0 ],
+          [           0, diff(N1(a,b), b),           0, diff(N2(a,b), b),           0, diff(N3(a,b), b) ],
+	  [ diff(N1(a,b), a), diff(N1(a,b), b), diff(N2(a,b), a), diff(N2(a,b), b), diff(N3(a,b), a), diff(N3(a,b), b) ]);
+
+B:A.Ba;
+

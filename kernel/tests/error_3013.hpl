@@ -1,0 +1,14 @@
+
+
+F1=function(a)
+{
+	F2=function(b)
+	{
+		a=b; # dangling reference!
+	};
+};
+
+F1(3);
+
+
+quit;

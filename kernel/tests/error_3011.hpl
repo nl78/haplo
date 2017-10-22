@@ -1,0 +1,6 @@
+
+include(3); # "include" expects a string
+
+
+quit;
+

@@ -1,0 +1,25 @@
+INSTALL(FILES
+		block.h
+		data.h
+		decode.h
+		encode.h
+		entity.h
+		error.h
+		file.h
+		fileslice.h
+		filter.h
+		gzindex.h
+		gzio.h
+		module.h
+		parser.h
+		parser_UNV.h
+		parser_UNV2411.h
+		parser_UNV2412.h
+		parser_UNV2414.h
+		parser_UNV55.h
+		parser_UNV56.h
+		parser_UNV57.h
+		parser_UNV58.h
+		parser_UNVXX.h
+		value.h
+	DESTINATION include/io)

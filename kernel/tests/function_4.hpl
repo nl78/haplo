@@ -1,0 +1,19 @@
+#
+# $Id: function_4.hpl,v 1.1.1.1 2001/10/21 08:25:16 nicoo Exp $
+#
+
+a=3;
+b=function(c)
+{
+	a=c;
+};
+b(1);
+a;
+clear(a);
+b(4);
+
+if (! (b(4) == 4))
+	abort();
+
+quit;
+

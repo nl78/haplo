@@ -1,0 +1,14 @@
+#
+# $Id: local_assign_1.hpl,v 1.1 2001/12/05 00:20:10 nicoo Exp $
+#
+
+a=function(b)
+{
+	c=b;
+};
+
+if (! (a(1) == 1))
+	abort();
+
+quit;
+

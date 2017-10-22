@@ -1,0 +1,92 @@
+#
+# $Id: model_2.hpl,v 1.2 2003/10/13 11:40:35 nicoo Exp $
+#
+
+use("elements");
+
+#
+# Create a meshing
+#
+
+MESHING=meshing(1);
+
+N=4;
+node_add(MESHING, [0]);
+for(i = 1; i <= N; i = i+1)
+{
+	node_add(MESHING, [2*i]);
+	mesh_add(MESHING, [i, i+1]);
+}
+print(MESHING);
+
+#
+# Create a model from this meshing with default elements
+#
+MODEL=model(MESHING);
+print(MODEL);
+
+#
+# Apply properties to theses elements
+#
+MATERIAL=material();
+set(MATERIAL, "E", 1);
+print(MATERIAL);
+
+PROPERTY=property();
+set(PROPERTY, "S", 1);
+print(PROPERTY);
+
+set(MODEL, MATERIAL);
+set(MODEL, PROPERTY);
+
+
+#
+# Boundary BC
+#
+
+BC=bc("DX1 + DX" + (N+1) + " = 0");
+#relation(bc, [[1, "DX", 1], [1, "DX", N+1]], 0);
+print(BC);
+
+#
+# Loading
+#
+LOAD=force("FX" + (N+1) + "=1.0");
+print(LOAD);
+
+#
+# Global Stiffness Matrix 
+#
+P=problem(MODEL, BC, LOAD);
+for(i=1; i <= dof(P); i=i+1)
+	print(i + " <-> " + dof(P, i));
+
+K=stiffness(P);
+
+profile(K);
+print(K);
+
+#
+# Display DOF
+#
+#for(i=1; i <= dof(P); i=i+1)
+#	print(i + " <-> " + dof(P, i));
+
+F=loading(P);
+print(F);
+
+
+#
+# Solve the linear system 
+#
+U=solve_ldlt(K, F);
+
+#
+# Display results
+#
+print(U);
+dx=get(U, dof(P, "DX" + (N+1)));
+
+assert(fabs(dx-2) < 1e-6 );
+
+quit;

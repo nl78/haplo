@@ -1,0 +1,8 @@
+a=function(b)
+{
+	b+2;
+};
+
+a(2);
+quit;
+

@@ -1,0 +1,20 @@
+#
+# $Id: function_0.hpl,v 1.1.1.1 2001/10/21 08:25:16 nicoo Exp $
+#
+
+a=3;
+
+b=function(c)
+{
+	a+1;
+};
+
+clear(a);
+
+print(b);
+
+if (! (b(1) == 4))
+	abort();
+
+
+quit;

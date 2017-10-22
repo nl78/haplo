@@ -1,0 +1,4 @@
+INSTALL(FILES fem.h DESTINATION include)
+ADD_SUBDIRECTORY (fem)
+
+

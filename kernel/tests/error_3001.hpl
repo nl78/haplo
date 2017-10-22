@@ -1,0 +1,4 @@
+
+a=print(""); # undefined value since 'print' return nothing
+
+quit;

@@ -1,0 +1,6 @@
+
+
+typo(); # Cannot execute this! (a warning is issued too)
+
+
+quit;

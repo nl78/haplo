@@ -1,0 +1,1700 @@
+%% LyX 2.0.3 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[11pt,english,french]{book}
+\usepackage[T1]{fontenc}
+\usepackage[latin1]{inputenc}
+\usepackage[a4paper]{geometry}
+\geometry{verbose,tmargin=1cm,bmargin=1cm,lmargin=1cm,rmargin=1cm,headsep=0cm}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\usepackage{array}
+\usepackage{textcomp}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+%% Because html converters don't know tabularnewline
+\providecommand{\tabularnewline}{\\}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+
+
+
+%%%%%
+%%%%% PDF
+%%%%% 
+%\pdfinfo{
+%/Title (Haplo)
+%/Subject (Logiciel de modélisation par éléments-finis)
+%/Author (Nicolas LAURENT)
+%/Creator (LaTeX)
+%}
+
+
+%%%%%
+%%%%% Packages standards
+%%%%%
+
+
+%\usepackage{a4wide}
+
+
+
+\usepackage{lettrine}
+\usepackage{color}
+
+
+
+
+%\usepackage{thumbpdf}
+
+%\usepackage[pdftex, 
+%colorlinks=true,
+%pagebackref, unicode,bookmarksnumbered=true]{hyperref}
+
+
+
+
+
+
+%%%%%
+%%%%% Gestion des fichiers
+%%%%%
+
+\listfiles
+\graphicspath{{Img/}{Fig/}{Uml/}}
+%\includeonly{problem,discret}
+
+
+
+%%%%%
+%%%%% Commandes locales
+%%%%%
+%\newcommand{\boldsymbol}[1]{\mbox{\boldmath$#1$}}
+%\newcommand{\tens}[0]{\ensuremath{\bar{\otimes}}}
+%\newcommand{\scalaire}[2]{\ensuremath{%
+%\left \langle #1 \mid #2 \right \rangle}} 
+%\newcommand{\norme}[1]{\ensuremath{\parallel #1 \parallel}}
+\newcommand{\mat}[1]{\ensuremath{\begin{bmatrix} #1\\ \end{bmatrix}}}
+%\newcommand{\abs}[1]{\ensuremath{\mid #1 \mid}}
+
+%\newcommand{\haplo}[0]{\textsf{Haplo}}
+
+
+%%%%%
+%%%%% Début du document
+%%%%%
+
+\makeatother
+
+\usepackage{babel}
+\addto\extrasfrench{%
+   \providecommand{\og}{\leavevmode\flqq~}%
+   \providecommand{\fg}{\ifdim\lastskip>\z@\unskip\fi~\frqq}%
+}
+
+\begin{document}
+\begin{titlepage}
+\centerline{\noindent \color[rgb]{0.60,0.64,0.86}{\rule{15.25cm}{0.20cm}}}\vspace{5cm}
+
+
+\begin{center}
+\includegraphics[width=85mm]{haplo} 
+\par\end{center}
+
+\bigskip{}
+
+
+\begin{center}
+\noindent{\colorbox[rgb]{0.60,0.64,0.86}{\color{white}{\resizebox{!}{0.65cm}{\rule[-0.25cm]{0cm}{1cm}\Huge \hspace{2em}\textbf{Logiciel
+d'analyse par éléments finis}\hspace{2em}}}}}
+\par\end{center}
+
+\vspace{3cm}
+
+
+\begin{center}
+Nicolas \textsc{Laurent}
+\par\end{center}
+
+\medskip{}
+
+
+\begin{center}
+\today
+\par\end{center}
+
+\end{titlepage}
+
+\noindent Avant toute chose, précisons un détail important : le nom
+``haplo'' est emprunté au héros des romans de Margaret \textsc{Weis}
+et Tracy \textsc{Hickman}. J'espère que ces dames ne m'en tiendront
+pas rigueur. \medskip{}
+
+
+\noindent Haplo est un logiciel libre; vous pouvez le redistribuer
+et/ou le modifier selon le termes de la Licence Publique GNU comme
+publiée par la Free Software Foundation; que ce soit la version 2
+de la licence, ou (à votre jugement) toute version postérieure. \medskip{}
+
+
+\noindent Ce programme est distribué dans l'espoir d'être utile, mais
+\textbf{sans aucune garantie}. \medskip{}
+
+
+\noindent Je précise que le projet Haplo est un projet strictement
+personnel développé sur mon temps libre et qu'il n'a aucun rapport
+avec mes activités professionnelles actuelles ou passées. \vfill{}
+
+
+\begin{tabular}{rl}
+Copyright \copyright\/ 1999-2008 & Nicolas \textsc{Laurent}\tabularnewline
+ & 18, Résidence La Chapelle\tabularnewline
+ & 78990 Elancourt\tabularnewline
+ & \texttt{<nl@gnu.org>}\tabularnewline
+\end{tabular}
+
+\tableofcontents{}
+
+
+\part{Manuel théorique}
+
+
+\chapter*{Conventions typographiques}
+
+Les quantités vectorielles sont notées en caractères gras. Leurs composantes
+sont en caractères ordinaires. 
+
+
+\chapter{Elasticité linéaire}
+
+
+\section{Formulation du problème}
+
+Soit le domaine $\Omega$, de frontière $\partial\Omega=\partial_{U}\Omega\cup\partial_{F}\Omega$
+avec $\partial_{U}\Omega\cap\partial_{F}\Omega=\varnothing$. On a
+noté $\partial_{U}\Omega$, la partie de la frontière où les déplacements
+$\boldsymbol{u_{d}}$ sont imposés et $\partial_{F}\Omega$ la partie
+de la frontière chargée par des forces surfaciques $\boldsymbol{F}$.
+L'interrieur du domaine est quant à lui chargé par la force volumique
+$\boldsymbol{f}$.
+
+Le problème consite à trouver $\boldsymbol{u}$, $\boldsymbol{\epsilon}$
+et $\boldsymbol{\sigma}$ tels que
+
+\[
+\left\{ \begin{array}{rcll}
+\boldsymbol{u} & = & \boldsymbol{u_{d}} & \mathrm{sur}\,\partial_{U}\Omega\\
+\textrm{div}\,\boldsymbol{\sigma}+\boldsymbol{f} & = & \boldsymbol{0} & \mathrm{sur}\,\Omega\\
+\boldsymbol{\sigma}\bar{\otimes}\boldsymbol{n} & = & \boldsymbol{F} & \mathrm{sur}\,\partial_{F}\Omega\\
+\boldsymbol{\sigma} & = & \boldsymbol{H}\bar{\otimes}\boldsymbol{\epsilon}\\
+\boldsymbol{\epsilon} & = & \frac{1}{2}\left(\textrm{grad}\,\boldsymbol{u}+\textrm{grad}^{t}\boldsymbol{u}\right)
+\end{array}\right.
+\]
+
+
+soit en écriture matricielle%
+\footnote{Dans la base naturelle%
+} :
+
+\[
+\left\{ \begin{array}{rcll}
+u_{i} & = & u_{d_{i}} & \mathrm{sur}\,\partial_{U}\Omega\\
+\sigma_{ij,j}+f_{i} & = & 0 & \mathrm{sur}\,\Omega\\
+\sigma_{ij}n_{j} & = & F_{i} & \mathrm{sur}\,\partial_{F}\Omega\\
+\sigma_{_{ij}} & = & H_{ijkl}\epsilon_{kl}\\
+\epsilon_{ij} & = & \frac{1}{2}\left(u_{i,j}+u_{j,i}\right)
+\end{array}\right.
+\]
+
+
+
+\section{Formulation variationnelle}
+
+On définit 
+\begin{quote}
+$\boldsymbol{u}$ cinématiquement admissible si et seulement si $\boldsymbol{u}=\boldsymbol{u_{d}}\mathrm{\; sur}\,\partial_{U}\Omega$
+
+$\boldsymbol{u}$ cinématiquement admissible à $\boldsymbol{0}$ si
+et seulement si $\boldsymbol{u}=\boldsymbol{0}\mathrm{\; sur}\,\partial_{U}\Omega$ 
+\end{quote}
+On a $\forall\boldsymbol{\delta u}$ cinématiquement adminsible à
+$\boldsymbol{0}$:
+
+\[
+\int_{\Omega}(\sigma_{ij,j}+f_{i})\cdot\delta u_{i}\cdot d\Omega=0
+\]
+
+
+En intégrant par partie, il vient 
+\[
+-\int_{\Omega}\sigma_{ij}\cdot\delta\epsilon_{ij}\cdot d\Omega+\int_{\Omega}f_{i}\cdot\delta u_{i}\cdot d\Omega+\int_{\partial_{F}\Omega}F_{i}\cdot\delta u_{i}\cdot ds=0
+\]
+
+
+En repportant la loi de comportement on obtient la formulation variationnelle
+du problème: 
+\[
+-\int_{\Omega}\epsilon_{ij}\cdot H_{ijkl}\cdot\delta\epsilon_{kl}\cdot d\Omega+\int_{\Omega}f_{i}\cdot\delta u_{i}\cdot d\Omega+\int_{\partial_{F}\Omega}F_{i}\cdot\delta u_{i}\cdot ds=0
+\]
+
+
+En notation matricielle, avec $\boldsymbol{u}=\left[\begin{array}{c}
+u_{1}\\
+u_{2}\\
+u_{3}
+\end{array}\right]$, $\boldsymbol{\epsilon}=\left[\begin{array}{c}
+\epsilon_{11}\\
+\epsilon_{22}\\
+\epsilon_{33}\\
+2\epsilon_{12}\\
+2\epsilon_{23}\\
+2\epsilon_{13}
+\end{array}\right]$ et $\boldsymbol{\sigma}=\left[\begin{array}{c}
+\sigma_{11}\\
+\sigma_{22}\\
+\sigma_{33}\\
+\sigma_{12}\\
+\sigma_{23}\\
+\sigma_{13}
+\end{array}\right]$ on note
+
+\[
+-\int_{\Omega}\boldsymbol{\epsilon}^{t}\boldsymbol{H}\boldsymbol{\delta\epsilon}\cdot d\Omega+\int_{\Omega}\boldsymbol{f}\boldsymbol{\delta u}\cdot d\Omega+\int_{\partial_{F}\Omega}\boldsymbol{F}\boldsymbol{\delta u}\cdot ds=0
+\]
+
+
+
+\chapter{Discrétisation du problème}
+
+Pour simplifier on prend $\boldsymbol{u_{d}}=\boldsymbol{O}$ sur
+$\partial_{u}\Omega$.
+
+
+\section{Méthode de Ritz}
+
+On note
+
+\[
+\boldsymbol{u}(\boldsymbol{x})=\sum_{i=1}^{n}\boldsymbol{\Phi}_{i}(\boldsymbol{x})\cdot q_{i}
+\]
+
+
+illustration 
+\begin{figure}
+\begin{centering}
+\includegraphics{discret_poutre} 
+\par\end{centering}
+
+\caption{Discrétasation avec 2 fonctions de forme}
+\end{figure}
+
+
+où les $\boldsymbol{\Phi}_{i}$ sont les fonctions de base et $q_{i}$
+sont les nouvelles inconnues.
+
+\[
+\boldsymbol{\epsilon}(\boldsymbol{u})=\sum_{i=1}^{n}\epsilon(\boldsymbol{\Phi}_{i})\cdot q_{i}
+\]
+
+
+On généraliste à toute grandeur dépendantes de $\boldsymbol{u}$ :
+
+\[
+\mathcal{P}(\boldsymbol{u})=\mathcal{P}(q_{1},\: q_{2},\:\dots,\: q_{n})
+\]
+
+
+On note
+
+\[
+\boldsymbol{q}=\left[\begin{array}{c}
+q_{1}\\
+q_{2}\\
+\vdots\\
+q_{n}
+\end{array}\right]
+\]
+ Avec cette notation, il vient
+
+\[
+\mathcal{P}(\boldsymbol{q})=\sum_{i=1}^{n}\sum_{j=1}^{n}\int_{\Omega}\frac{1}{2}\cdot\boldsymbol{\epsilon}(\boldsymbol{\Phi}_{i})\cdot q_{i}\cdot\boldsymbol{H}\cdot\boldsymbol{\epsilon}(\boldsymbol{\Phi}_{j})\cdot q_{j}\cdot d\Omega
+\]
+
+
+\[
+\mathcal{P}(\boldsymbol{q})=\frac{1}{2}\cdot\boldsymbol{q}^{t}\cdot\boldsymbol{K}\cdot\boldsymbol{q}
+\]
+
+
+\[
+K_{ij}=\int_{\Omega}\boldsymbol{\epsilon}(\boldsymbol{\Phi}_{i})\cdot\boldsymbol{H}\cdot\boldsymbol{\epsilon}(\boldsymbol{\Phi}_{j})\cdot d\Omega
+\]
+
+
+Travail des forces extérieures :
+
+\[
+\boldsymbol{f}\bar{\otimes}\boldsymbol{u}=\boldsymbol{F}^{t}\cdot\boldsymbol{q}
+\]
+
+
+\[
+F_{i}=\int_{\Omega}\boldsymbol{\Phi}_{i}
+\]
+ 
+
+
+\section{Méthode de Galerkin}
+
+%%%%%
+%%%%% NUMEROTATION ET RENUMEROTATION
+%%%%%
+
+
+
+\chapter{Numérotation des inconnues}
+
+
+\section{Optimisation de la numérotation}
+
+Etant donné une matrice symétrique définie positive $\boldsymbol{A}$,
+on considère sa factorisation $\boldsymbol{A}=\boldsymbol{L}\boldsymbol{D}\boldsymbol{L}^{t}$
+et la résolution de systèmes linéaires $\boldsymbol{L}\boldsymbol{D}\boldsymbol{L}^{t}\boldsymbol{x}=\boldsymbol{b}$.
+On peut aussi bien effectuer la factorisation et la résolution pour
+la matrice $\boldsymbol{P}\boldsymbol{A}\boldsymbol{P}^{t}$ qui résulte
+d'une renumérotation des équations et des inconnues définissant la
+matrice de permutation $\boldsymbol{P}$. En général, cette opération
+de renumération a pour but d'optimiser l'espace mémoire et le temps
+de calcul nécessaires à la factorisation et à la résolution.
+
+
+\subsection{Algorithmes de Cuthill Mac Kee}
+
+On cherche à éviter un profil avec de grandes valeurs de demi largeurs
+de bande $l_{i}=i-j_{i}$. On numérote les sommers du graphe les uns
+après les autres. Or, dès qy'un sommet est numéroté, avec le numéro
+$l$, il impose une valeur $j_{k}=l$ à chacun de ses voisins non
+encore numérotés, qui recevra ultérieurement le numéro $k>l$. La
+demi largeur de bande $l_{k}$ sera égale à $k-l$. Pour la diminuer,
+on a donc intérêt à affecter le numéro le plus petit possible aux
+voisins d'un sommet qui vient d'être numéroté.
+
+Cette remarque conduit au principe de l'algorithme de Cuthille Mac
+Kee, qui est le suivant :
+
+Ayant choisi le sommet n\textdegree{}1, on numérote ses voisins, puis
+les voisins non encore numérotés du sommet n\textdegree{} 2, puis
+les sommets non encore numérotés du sommet n\textdegree{}3, et ainsi
+de suite. Lorsqu'à une étape il y a plusieurs sommets à numéroter,
+on numérote en premier les sommets qui ont le moins de voisins non
+encore numérotés.
+
+La numérotation inverse d'une numérotation donnée pour une matrice
+d'ordre $N$ est celle qui associe le numéro $1+N-i$ au n{\oe}ud
+qui était numéroté $i$. On montre que pour une matrice dont les éléments
+onté été numérotés selon l'algorithme de Cuthill Mac Kee, le profil
+de la numérotation inverse contient moins (ou au plus autant) d'élément.
+On parle de l'algorithme de Cuthill Mac Kee inverse. La figure %\ref{exemple-de-renum}
+montre l'impact d'une telle ne-numérotation.
+
+\begin{table}
+\begin{tabular}{|c|c|c|}
+\hline 
+Maillage  & Matrice de rigidité  & Taille du profile \tabularnewline
+\hline 
+\hline 
+ &  & \tabularnewline
+\includegraphics{renum_meshing1}  & \includegraphics{renum_K1}  & 162 \tabularnewline
+{[}1em{]}  &  & \tabularnewline
+\includegraphics{renum_meshing2}  & \includegraphics{renum_K2}  & 84 \tabularnewline
+{[}1em{]}  &  & \tabularnewline
+\includegraphics{renum_meshing3}  & \includegraphics{renum_K3}  & 77 \tabularnewline
+{[}1em{]}  &  & \tabularnewline
+\end{tabular}%\label{exemple-de-renum}
+
+
+\caption{Mise en {\oe}uvre de la renumérotation inverse de Cuthill Mac Kee}
+\end{table}
+
+
+
+\subsection{Choix d'un premier sommet}
+\begin{enumerate}
+\item Choisir un sommet $r$ quelconque comme raçine. Dans l'implementation,
+on choisit le sommet n\textdegree{}1. 
+\item Construire la stucture en niveu à partir de $r$. Soit $e(r)$ l'excentricité
+de $r$ et $N_{e(r)}$ le dernier niveau 
+\item Choisir un sommet $i\in N_{e(r)}$, non encore choisi (en principe,
+on en choisit un ayant le moins de voisins possible) et calculer $e(i)$.
+
+\begin{itemize}
+\item si $e(i)>e(r)$ alors remplacer $r$ par $i$ et retourner en 2 
+\item si $e(i)\leq e(r)$ alors retourner en 3 pour essayer un autre sommet
+de $N_{e(r)}$ 
+\item si on a épuisé tous les sommets de $N_{e(r)}$ alors prendre $r$
+comme premier sommet. 
+\end{itemize}
+\end{enumerate}
+
+\chapter{Conditions aux limites}
+
+
+\section{introduction}
+
+Nous nous intéressons dans cette partie à la prise en compte des conditions
+aux limites cinématiques dans la résolution du problème d'élasticité
+linéaire. La méthode retenue est celle de la dualisation de ces conditions
+par l'introduction de nouvelles inconnues appelées ``multiplicateurs
+de lagrange''.
+
+Cette méthode ainsi que sa documentation est très largement inspirée
+de \cite{aster2}.
+
+
+\section{Multiplicateurs de Lagrange}
+
+
+\subsection{Le problème}
+
+Dans \textsf{haplo}, on est amené à résoudre de nombreux systèmes
+linéaires. Souvent de tels systèmes peuvent être considérés comme
+l'expression algébrique d'un poblème de minimisation d'une fonctionnelle
+quadratique positive $J(\boldsymbol{u})$ où $\boldsymbol{u}$ appartient
+à $\mathbb{R}^{n}$ tout en étant contraint par un certain nombre
+de relations affines $\boldsymbol{C}_{i}^{t}\bar{\otimes}\boldsymbol{u}=d_{i}$.
+
+C'est à ce problème de minimisation sous contraintes affines auquel
+on s'intéresse ici. Dans la suite, on prendra comme exemple le cas
+de la mécanique statique linéaire. On parlera de matrice de rigidité,
+de vecteur déplacement.
+
+Soit le problème discrétisé : 
+\[
+\mathcal{P}_{1}\begin{cases}
+\underset{\boldsymbol{u}\in\mathbb{V}\subset\mathbb{R}}{\min}J(\boldsymbol{u})\\[1em]
+J(\boldsymbol{u})=\frac{1}{2}\langle\boldsymbol{A}\bar{\otimes}\boldsymbol{u}\mid\boldsymbol{u}\rangle-\boldsymbol{b}\bar{\otimes}\boldsymbol{u}\\[1em]
+\mathbb{V}=\lbrace\boldsymbol{u}\in\mathbb{R}^{n}\ /\ \boldsymbol{C}_{i}^{t}\bar{\otimes}\boldsymbol{u}=d_{i},\ \forall i=1,\: p\rbrace
+\end{cases}
+\]
+
+
+Ce problème discret est résolu numériquement en exprimant que la ``dérivée''
+de $J(\boldsymbol{u})$ dans $\mathbb{V}$ est nulle. On est alors
+ramené à résoudre un système linéaire d'équations. Le problème est
+de ``dériver'' $J(\boldsymbol{u})$ dans $\mathbb{V}\subset\mathbb{R}^{n}$.
+
+En général, pour des raisons pratiques, l'expression de $J(\boldsymbol{u})$
+est calculée dans la base de tous les déplacements nodaux, sans tenir
+compte des contraintes: $\boldsymbol{u}$ appartient alors à $\mathbb{R}^{n}$
+où $n$ est le nombre d'inconnues nodales.
+
+Si $\mathbb{V}$ est un sous-espace vectoriel de $\mathbb{R}^{n}$
+engendré par $n-p$ déplacements nodaux de base alors la dérivation
+de $J(\boldsymbol{u})$ se fait simplement : il suffit de suprimer
+dans les matrices $\mathbf{A}$ et $\boldsymbol{b}$ les lignes et
+les colonnes correspondantes aux ddl fixés à zéro: $u_{i}=0$
+
+Si les ddl contraints ne sont pas mis à zero mais affectés à des valeurs
+données, $u_{i}=d_{i}$ alors il faut modifier $\boldsymbol{b}$.
+Enfin, si les contraintes s'expriment en une relation linéaire entre
+les ddl il faut modifier $\boldsymbol{A}$ et $\boldsymbol{b}$.
+
+
+\subsection{Principe}
+
+Le principe des multiplicateurs de Lagrange permet de résoudre le
+problème sans toucher aux matrices $\boldsymbol{A}$ et $\boldsymbol{b}$
+mais en indroduisant des inconnues supplémenataires.
+
+En effet, au lieu de résoudre le problème dans l'espace $\mathbb{V}$
+de dimension $n-p$, on le résout dans l'espace $\mathbb{R}^{n+p}$.
+Les inconnues supplémentaires sont notées $\lambda_{i}$ et sont nommés
+multiplicateurs de lagrange.
+
+Reprenons le problème précédent, on a
+\[
+\mathcal{P}_{1}\begin{cases}
+\underset{\boldsymbol{u}\in\mathbb{V}\subset\mathbb{R}}{\min}J(\boldsymbol{u})\\[1em]
+J(\boldsymbol{u})=\frac{1}{2}\langle\boldsymbol{A}\bar{\otimes}\boldsymbol{u}\mid\boldsymbol{u}-\boldsymbol{b}\bar{\otimes}\boldsymbol{u}\\[1em]
+\mathbb{V}=\lbrace\boldsymbol{u}\in\mathbb{R}^{n}\ /\ \langle\boldsymbol{C}_{i}\mid\boldsymbol{u}\rangle=d_{i},\ \forall i=1,\: p\rbrace
+\end{cases}
+\]
+
+
+Les $\boldsymbol{C}_{i}$ sont des formes linéaires sur $\mathbb{R}^{n}$,
+les $d_{i}$ sont des constantes données. De plus, on suppose que
+les $p$ formes $\boldsymbol{C}_{i}$ sont indépendantes entre-elles
+: la dimension de l'espace engendré par les $\boldsymbol{C}_{i}$
+est donc $p$.
+
+On peut montrer que le problème $\mathcal{P}_{1}$ est équivalent
+au suivant :
+
+\[
+\mathcal{P}_{2}:\boldsymbol{u}\in\mathbb{V}\begin{cases}
+\mathbb{V}=\lbrace\boldsymbol{u}\in\mathbb{R}^{n}\ /\ \langle\boldsymbol{C}_{i}\mid\boldsymbol{u\rangle}=d_{i},\ \forall i=1,\: p\rbrace\\
+\langle\boldsymbol{A}\bar{\otimes}\boldsymbol{u}-\boldsymbol{b}\mid\boldsymbol{v}\rangle=0,\ \forall\boldsymbol{v}\in\mathbb{V}_{0}\\
+\mathbb{V}_{0}=\lbrace\boldsymbol{v}\in\mathbb{R}^{n}\ /\ \langle\boldsymbol{C}_{i}\mid\boldsymbol{u}\rangle=0,\ \forall i=1,\: p\rbrace
+\end{cases}
+\]
+
+
+Réécrivons le problème $\mathcal{P}_{2}$ différemment :
+
+Il s'agit de trouver $\boldsymbol{u}\in\mathbb{R}^{n}$ tel que 
+\[
+\forall i=1,\: p\ \text{on a}\ \langle\boldsymbol{C_{i}}\mid\boldsymbol{u}\rangle=d_{i}
+\]
+ 
+\[
+\forall\boldsymbol{v}\ /\ \boldsymbol{C_{i}}\boldsymbol{v}=0,\ \text{alors}\ \langle\boldsymbol{A}\boldsymbol{u}-\boldsymbol{b}\mid\boldsymbol{v}\rangle=0
+\]
+
+
+On a donc $\boldsymbol{C_{i}}\in\mathbb{R}^{n}$ et $\boldsymbol{A}\boldsymbol{u}-\boldsymbol{b}\in\mathbb{R}^{n}$
+orthogonaux à $\mathbb{V}_{0}$.
+
+$\mathbb{V}_{0}$ est le sous espace vectoriel de $\mathbb{R}^{n}$
+orthogonal à $\lbrace\boldsymbol{C_{i}},\ \forall i=1,p\rbrace$.
+Puisque la décomposition de $\mathbb{R}^{n}$ en somme directe de
+2 sous espaces orthogonaux est unique, on en déduit que $\boldsymbol{A}\boldsymbol{u}-\boldsymbol{b}$
+appartient à l'ensemble engendré par le $\boldsymbol{C_{i}}$.
+
+Il existe donc une famille de scalaires $\lambda_{i}$ appelés multiplicateurs
+de Lagrange tels que :
+
+\[
+\boldsymbol{A}\boldsymbol{u}-\boldsymbol{b}+\sum_{i}\lambda_{i}\boldsymbol{C_{i}}=0
+\]
+
+
+Cette égalité est vraie dans $\mathbb{R}^{n}$. Le problème $\mathcal{P}_{2}$
+devient alors
+
+\[
+\mathcal{P}_{3}:\begin{cases}
+\boldsymbol{u}\in\mathbb{R}^{n}\\
+\forall i=1,\: p\ \lambda_{i}\in\mathbb{R}
+\end{cases}\ /\ \begin{cases}
+\forall i=1,p\ \boldsymbol{C_{i}}\boldsymbol{u}=d_{i}\\
+\boldsymbol{A}\bar{\otimes}\boldsymbol{u}-\boldsymbol{b}+\sum_{i}\lambda_{i}\boldsymbol{C}_{i}=0
+\end{cases}
+\]
+
+
+Le problème $\mathcal{P}_{3}$ est le problème recherché. On dira
+que c'est le problème avec conditions cinématique dualisées. Matriciellement
+on peut l'écrire :
+
+\[
+\left[\boldsymbol{K}\right]\left[\boldsymbol{x}\right]=\left[\boldsymbol{F}\right]
+\]
+
+
+soit
+
+\[
+\boldsymbol{\left[A\right]}\boldsymbol{\left[u\right]}=\left[\boldsymbol{b}\right]
+\]
+
+
+On peut noter que ce système peut être obtenu en cherchant à rendre
+extrémale la fonctionnelle :
+
+\[
+\mathcal{L}(\boldsymbol{u},\boldsymbol{\lambda})=\frac{1}{2}\boldsymbol{\langle A}\bar{\otimes}\boldsymbol{u}\mid\boldsymbol{u}\rangle-\langle\boldsymbol{b}\mid\boldsymbol{b}\rangle+\langle\boldsymbol{\lambda}\mid\boldsymbol{C}\bar{\otimes}\boldsymbol{u}-\boldsymbol{d}\rangle
+\]
+
+
+Cette fonctionnelle est appelée Lagrangien du problème initial. L'intérêt
+principal de cette méthode est de s'affranchir des contraintes : $\boldsymbol{u}$
+et $\boldsymbol{\lambda}$ sont cherchés dans $\mathbb{R}^{n}$ et
+$\mathbb{R}^{p}$.
+
+Les coefficients $\lambda_{i}$ sont appelés coefficient de Lagrange
+du problème. On les nommera dans la suite les ``Lagrange''.
+
+
+\section{Inconvenients de cette méthode}
+
+On voit d'après l'expression du Lagrangien que la matrice $\boldsymbol{K}$
+n'est plus positive alors que $\boldsymbol{A}$ l'était. En effet
+:
+
+\[
+\exists\boldsymbol{u_{0}}\ /\ \boldsymbol{C}\boldsymbol{u_{0}}\neq0\Rightarrow\exists\lambda_{0}\ /\ \mathcal{L}(\boldsymbol{u_{0}},\lambda_{0})=\frac{1}{2}\langle\boldsymbol{A}\bar{\otimes}\boldsymbol{u_{0}}\mid\boldsymbol{u}_{0}\rangle+\lambda_{0}\boldsymbol{C}\bar{\otimes}\boldsymbol{u_{0}}<0
+\]
+
+
+La perte de la positivité de la matrice $\boldsymbol{K}$ entraîne
+que la résolution du système $\boldsymbol{K}\boldsymbol{x}=\boldsymbol{F}$
+ne peut plus se faire, en général, par les algorithmes classiques
+de gradient ou par la factorisation de Cholesky. L'algorithme de factorisation
+$LDL^{t}$ sans permutation des lignes et des colonnes n'est plus
+garanti non plus. Or c'est ce dernier que l'on veut pouvoir continuer
+à utiliser.
+
+Illustrons le problème par l'exemple suivant :
+
+Un ressort de raideur $k$ relie 2 n{oe}uds $N_{1}$ et $N_{2}$.
+
+\begin{center}
+\includegraphics{bc_exemple}
+\par\end{center}
+\begin{itemize}
+\item 2 inconnues : $u_{1}$ et $u_{2}$
+\item 2 forces nodales : $f_{1}$ et $f_{2}$.
+
+
+\[
+A=\mat{k}
+\]
+
+
+\item 1 contrainte : $\alpha u_{1}+\beta u_{2}=\gamma$
+\end{itemize}
+Le problème dualisé s'écrit: $\boldsymbol{K}\boldsymbol{x}=\boldsymbol{F}$
+avec
+
+\[
+\boldsymbol{K}=\mat{k},\ \boldsymbol{x}=\mat{u_{1}}\ \text{et}\ \boldsymbol{F}=\mat{f_{1}}
+\]
+
+
+
+\subsection{Condition d'utilisation de la factorisation}
+
+La condition nécessaire et suffisante pour que l'algorithme $LDL^{t}-SP$%
+\footnote{Factorisation $LDL^{t}$ sans permutation%
+} est la suivante :
+
+En notant $\boldsymbol{K_{i}}$ la sous-matrixe de $\boldsymbol{K}$
+formée par les $i$ premières lignes et colonnes de $\boldsymbol{K}$.
+Il n'y aura pas de pivot nul dans l'algorithme $LDL^{t}-SP$ si et
+seulement si $K_{i}$ est inversible pour tout $i$ compris entre
+$1$ et $n$.
+
+Dans l'exemple précédent, la matrice $\boldsymbol{K}$ est écrite
+avec comme numérotation des inconnues, l'ordre des composantes de
+$\boldsymbol{x}$ :
+\begin{itemize}
+\item avec $\boldsymbol{x}=\mat{u_{1}}$ il vient 
+\[
+\boldsymbol{K}=\mat{k}
+\]
+ Or $\boldsymbol{K_{2}}=\mat{k}$ ne vérifie pas la condition d'utilisation
+de la factorisation.
+\item avec $\boldsymbol{x}=\mat{\lambda}$ on a 
+\[
+\boldsymbol{K}=\mat{0}
+\]
+ Dans ce cas, $\boldsymbol{K_{1}}$ n'est pas inversible.
+\item avec $\boldsymbol{x}=\mat{u_{1}}$ on a 
+\[
+\boldsymbol{K}=\mat{k}
+\]
+ Dans ce cas : 
+
+\begin{itemize}
+\item $\det{\boldsymbol{K_{1}}}=k$ 
+\item $\det{\boldsymbol{K_{2}}}=\alpha^{2}$ 
+\item $\det{\boldsymbol{K_{1}}}=-k(\alpha+\beta)$ 
+\end{itemize}
+
+Cete numérotation fait que la matrice $\boldsymbol{K}$ respecte la
+condition d'utilisation de l'algorithme $LDL^{t}-SP$ avec les conditions
+supplémentaires: 
+\begin{itemize}
+\item $k>0$. Or, par définition, cette condition est repectée puisque $k$
+représente la raideur du ressort.
+\item $\alpha+\beta\neq0$. Le cas $\alpha+\beta=0$ correspond à un ``mauvais''
+blocage physique : la condition $u_{1}+u_{2}=c$ est un ``mouvement
+de corps rigide''%
+\footnote{Un mouvement ou mode à energie nulle%
+} pour $\boldsymbol{A}$.
+
+
+Pour que le problème global ait une solution unique, il fauten effet,
+que les conditions $\boldsymbol{C_{i}}\boldsymbol{u}=d_{i}$ engendrent
+un espace de déplacements admissibles qui ne contiennent aucun mouvements
+de corps rigide de $\boldsymbol{A}$. On écrira 
+\[
+\ker\boldsymbol{A}\cap\mathbb{V}_{0}=\lbrace\boldsymbol{0}\rbrace
+\]
+
+
+
+On supposera dans la suite que cette condition est vérifiée. C'est-à-dire
+que les contrainte $\boldsymbol{C}_{i}$ bloque aux moins les mouvement
+de corps rigides de $\boldsymbol{A}$. Lorsque cette condition est
+vérifiée et que les conditions $\boldsymbol{C_{i}}$ sont indépendantes
+entre elles, on dira que le problème est physiquement bien posé.
+
+\item $\boldsymbol{K_{2}}$ n'est inversible que si $\alpha\neq0$. Aussi,
+on voit qu'avec une telle numérotation le blocage ne peut être réduit
+à $u_{2}=\delta$. Dans ce cas, la symétrie du problème montre que
+pour pouvoir traiter le problème il faut numéroter $\boldsymbol{x}=\mat{u_{2}}^{t}$. 
+\end{itemize}
+\end{itemize}
+De cette exemple, on peut tirer quelques conclusions générales :
+\begin{itemize}
+\item Si on numérote tous les $\lambda_{i}$ aprés les $u_{i}$, si $\boldsymbol{A}$
+est singulière alors $\boldsymbol{K_{i}}=\boldsymbol{A}$ n'est pas
+inversible.
+\item Soit une condition $\boldsymbol{C_{i}}\boldsymbol{u}=d_{i}$ et $\lambda_{i}$
+le multiplicateur de Lagrange associé. Cette condition ne fait pas
+en général intervenir toutes les inconnues $u_{i}$ : l'équation contraint
+certains ddl. Si $\lambda_{i}$ est numéroté avant les ddl qu'il contraint
+on a, avec $j$ le numéro de l'équation de $\lambda_{i}$: 
+\[
+\boldsymbol{K_{j}}=\mat{\boldsymbol{K_{j-1}}}
+\]
+ n'est pas inversible.
+\item Il existe des blocages qui imposent une certaine numérotation des
+ddl physiques : par exemple on ne peut pas retenir une structure par
+son dernier ddl physique.
+\item Pour finir, nous pouvons remarquer : si $\boldsymbol{K}$ est inversible,
+on sait qu'il existe une numérotation des inconnues permettant de
+factoriser $\boldsymbol{K}$ avec l'algorithme $LDL^{t}$. Cette numérotation
+est par exemple celle résultant de l'algorithme avec $LDL^{t}$ avec
+permutation. Mais cette renumérotation ne concerne que les lignes
+de la matrice. Il y a donc perte de la symétrie de $\boldsymbol{K}$.
+\end{itemize}
+Toutes ces remarques montrent que la dualisation proposée dans cette
+section ne permet pas d'utiliser $LDL^{t}-SP$.
+
+
+\section{La double dualisation}
+
+
+\subsection{Principe}
+
+La méthode proposée ici est celle mise en {oe}uvre dans les codes
+\textsf{Castem 2000} et \textsf{Code\_Aster}. Une présentation intuitive
+pourrait être la suivante :
+\begin{quote}
+On voit que le problème dualisé a des termes nuls sur la diagonales
+: ceux correspondants aux ddl de Lagrange. Cette propriété se remarque
+aussi sur le Lagrangien : il n'y a pas de terme quadratique en $\lambda$.
+
+Cette nullité des termes diagonaux empêche certaines permutations
+de lignes et de colonnes : on ne peut pas numéroter un multiplicateur
+de Lagrange avant les ddl physiques qu'il contraint.
+
+Pour redonner de la souplesse au système, on peut penser faire apparaître
+des termes non-nuls sur la diagonale de façon artificielle. Par exemple,
+on pourrait ``ajouter'' un peu des premières lignes du système aux
+secondes, cette méthode détruirait la symétrie de la matrice globale.
+
+Il faut donc ajouter des nouvelles équations et de nouvelles inconnues
+qui combinée à l'équation matricielle $\boldsymbol{C}\boldsymbol{u}=\boldsymbol{d}$
+rendent un système symétrique, équivalent au premier et avec des termes
+non-nuls sur la diagonale. 
+\end{quote}
+L'idée est alors de décomposer chaque coefficient de Lagrange $\lambda$
+en 2 parties égales $\lambda^{1}$ et $\lambda^{2}$. L'équation $\boldsymbol{C}\boldsymbol{u}=\boldsymbol{d}$
+est remplacée par : 
+\[
+\begin{cases}
+\boldsymbol{C}\boldsymbol{u}-\alpha(\boldsymbol{\lambda^{1}}-\boldsymbol{\lambda^{2}})=\boldsymbol{d}\\
+\boldsymbol{C}\boldsymbol{u}+\alpha(\boldsymbol{\lambda^{1}}-\boldsymbol{\lambda^{2}})=\boldsymbol{d}
+\end{cases}
+\]
+ où $\alpha$ est une constante non nulle.
+
+
+\subsection{Equivalence}
+
+Montrons l'équivalence de l'ancien problème et du nouveau :
+\begin{quote}
+\textbf{Problème 1} : ``simple Lagrange''
+
+trouver $\begin{cases}
+\boldsymbol{u}\in\mathbb{R}^{n}\\
+\boldsymbol{\lambda}\in\mathbb{R}^{p}
+\end{cases}$ tels que $(S)\begin{cases}
+\boldsymbol{A}\boldsymbol{u}+\boldsymbol{C}^{t}\boldsymbol{\lambda}=\boldsymbol{b}\\
+\boldsymbol{C}\boldsymbol{u}=\boldsymbol{d}
+\end{cases}$ 
+\end{quote}
+on a $(S)\iff\begin{cases}
+\boldsymbol{\lambda^{1}}=\boldsymbol{\lambda^{2}}\\
+\boldsymbol{\lambda}=\boldsymbol{\lambda^{1}}+\boldsymbol{\lambda^{2}}\\
+\boldsymbol{A}\bar{\otimes}\boldsymbol{u}+\boldsymbol{C}^{t}\bar{\otimes}\boldsymbol{\lambda}=\boldsymbol{\lambda}\\
+\boldsymbol{C}\bar{\otimes}\boldsymbol{u}=\boldsymbol{d}
+\end{cases}$
+
+D'où le problème équivalent
+\begin{quote}
+\textbf{Problème 2} : ``double Lagrange''
+
+trouver $\begin{cases}
+\boldsymbol{u}\in\mathbb{R}^{n}\\
+(\boldsymbol{\lambda^{1}},\boldsymbol{\lambda^{2}})\in\mathbb{R}^{p}\times\mathbb{R}^{p}
+\end{cases}$ tels que $(S')\begin{cases}
+\boldsymbol{A}\bar{\otimes}\boldsymbol{u}+\boldsymbol{C}^{t}\bar{\otimes}\boldsymbol{\lambda^{1}}+\boldsymbol{C}^{t}\bar{\otimes}\boldsymbol{\lambda^{2}}=\boldsymbol{b}\\
+\boldsymbol{C}\bar{\otimes}\boldsymbol{u}-\alpha\bar{\otimes}\boldsymbol{\lambda^{1}}+\alpha{\lambda^{2}}=\boldsymbol{d}\\
+\boldsymbol{C}\boldsymbol{u}+\alpha\boldsymbol{\lambda^{1}}-\alpha{\lambda^{2}}=\boldsymbol{d}\\
+\alpha\neq0
+\end{cases}$ 
+\end{quote}
+Le nouveau problème peut s'écrire :
+
+\[
+\boldsymbol{K'}\boldsymbol{x'}=\boldsymbol{F'}
+\]
+
+
+avec 
+\[
+\boldsymbol{K'}=\mat{\boldsymbol{A}},\ \boldsymbol{x'}=\mat{\boldsymbol{u}}\ \text{et}\ \boldsymbol{F'}=\mat{\boldsymbol{b}}
+\]
+
+
+Le problème correspond à rendre extrémale la fonctionnelle
+
+\[
+\mathcal{L'}(\boldsymbol{u},\boldsymbol{\lambda^{1}},\boldsymbol{\lambda^{2}})=\frac{1}{2}\boldsymbol{A}\bar{\otimes}\boldsymbol{u}\cdot\boldsymbol{u}-\boldsymbol{b}\cdot\boldsymbol{b}+\boldsymbol{\lambda^{1}}\cdot{\boldsymbol{C}\boldsymbol{u}-\boldsymbol{d}}+\langle\boldsymbol{\lambda^{1}}\mid\boldsymbol{C}\bar{\otimes}\boldsymbol{u}-\boldsymbol{d}\rangle-\frac{\alpha}{2}\parallel\boldsymbol{\lambda^{1}}-\boldsymbol{\lambda^{2}}\parallel
+\]
+
+
+On peut montrer que si on observe une certaine règle de numérotation
+des inconnues et on choisissant la constante $\alpha>0$, la matrice
+$\boldsymbol{K'}$ verifie la condition d'utilisation de la factorisation
+$LDL^{t}-SP$. Cette règle est la suivante :
+\begin{quote}
+Soit une relation de blocage $\boldsymbol{C_{i}}\boldsymbol{u}=d_{i}$,
+il lui correspond 2 multiplicateurs de Lagrange $\lambda_{i}^{1}$
+et $\lambda_{i}^{2}$. Cette relation fait intervenir un certain nombre
+de ddl physiques.
+
+Pour toutes les relations de blocage, il faut placer $\lambda^{1}$
+avant le premier ddl physique contraint et $\lambda^{2}$ après le
+dernier ddl physique contraint. 
+\end{quote}
+Pour diminuer l'occupation mémoire de la matrice $\boldsymbol{K}$,
+il faut chercher à minimiser la largeur de bande. C'est ce que l'on
+fait dans \textsf{haplo} en ``encadrant'' les relations ``au plus
+près'': 
+\begin{itemize}
+\item $\lambda^{1}$ est placé juste avant le premier ddl contraint 
+\item $\lambda^{2}$ est placé juste après le dernier ddl contraint. 
+\end{itemize}
+La technique de la double dualisation associée à la règle précédente
+permet de résoudre tout système linéaire physiquement bien posé avec
+l'algorithme $LDL^{t}-SP$. La démonstration suppose néanmoins que
+la matrice $\boldsymbol{A}$ soit symétrique et positive.
+
+
+\section{Conditionnement du système}
+
+Lorsque l'on regarde l'expression de la matrice que l'on va finalement
+factoriser $\boldsymbol{K'}$, on voit que ces différentes sous matrices
+$\boldsymbol{A}$, $\boldsymbol{C}$ et $\alpha\boldsymbol{I}$ peuvent
+être d'ordre de grandeur très différentes. On sait qu'en général cette
+situation n'est pas favorable numériquement.
+
+Il faut remarquer que les équations de liaison $\boldsymbol{C}\boldsymbol{u}=\boldsymbol{d}$
+peuvent être multipliées par une constante arbitraire $\beta$ sans
+changer le problème.De plus nous avons vu que les matrices $\alpha\boldsymbol{I}$
+étaient également arbitraire avec $\alpha>0$. Nous disposons donc
+de deux paramètres permettant de ``régler'' le conditionnement de
+la matrice.
+
+Nous ne ferons pas de démonstration générale mais nous nous contenterons
+d'examiner le cas le plus trivial qui soit : un ressort, un ddl, une
+liaison.
+
+Soit $k$ est la rigidité du ressort, la matrice $\boldsymbol{K'}$
+s'écrit 
+\[
+\boldsymbol{K'}=\mat{k}
+\]
+ Le conditionnement de cette matrice est liée à la dispersion de ses
+valeurs propres $\mu_{i}$. Calculons le polynôme caractéristique
+de $\boldsymbol{K'}$ : 
+\[
+P(\mu)=(\mu+2\alpha)(-\mu^{2}+k\mu+2\beta^{2})
+\]
+
+
+\[
+\iff\left\lbrace \begin{array}{rclcr}
+\mu_{1} & = & -2\alpha & < & 0\\
+\mu_{2} & = & \frac{k+\sqrt{k^{2}+8\beta^{2}}}{2} & > & 0\\
+\mu_{3} & = & \frac{k-\sqrt{k^{2}+8\beta^{2}}}{2} & < & 0
+\end{array}\right.
+\]
+
+
+$k$ est la valeur propre du système non contraint. Cette valeur est
+l'ordre de gradeur recherché pour $\mu_{1}$, $\mu_{2}$ et $\mu_{3}$.
+
+On remarque que $\mu_{1}<0$, $\mu_{3}<0$. C'est-à-dire que les 2
+valeurs propres ajoutées par les coefficients de Lagrange sont négatifs%
+\footnote{C'est d'ailleurs à cause de cela que l'algorithme $LDL^{t}-SP$ n'est
+pas garanti sans précaution.%
+}.
+
+On cherche à obtenir des valeurs propres d'un même ordre de grandeur
+: 
+\[
+\mid\mu_{1}\mid\ \cong\ \mid\mu_{2}\mid\ \cong\ \mid\mu_{3}\mid
+\]
+
+
+il vient
+
+\[
+\mid\mu_{1}\mu_{3}\mid\ \cong\ \mid\mu_{1}\mid^{2}\Rightarrow2\beta^{2}\ \cong\ 4\alpha^{2}
+\]
+
+\begin{itemize}
+\item Si $\beta\ll k$, alors $\mu_{3}\cong0$ et $\mu_{2}\cong k$ : ce
+n'est pas le résultat cherché. 
+\item Si $\beta\gg k$, alors $\mid\mu_{2}\mid\ \cong\ \mid\mu_{3}\mid\ \cong\ \sqrt{2}\mid\mu_{1}\mid$.
+Les trois valeurs propre sont alors en valeur absolue de l'ordre de
+$\beta$ qui est une constante arbitraire très grande devant $k$. 
+\end{itemize}
+Cette solution n'est pas celle que l'on retiendra car la valeur de
+$k$ est, dans le cas général%
+\footnote{Cas avec un grand nombre de ddl.%
+}, un ordre de grandeur des autres valeurs propres du système.
+
+Dans \textsf{haplo} on prend 
+\[
+\beta=\alpha\cong k
+\]
+ 
+\[
+\Rightarrow\begin{cases}
+\mu_{1}\cong-2k\\
+\mu_{2}\cong2k\\
+\mu_{3}\cong-k
+\end{cases}
+\]
+
+
+Pratiquement dans \textsf{haplo}, on choisit une valeur $\alpha$
+unique pour tout le système. Cette valeur est la moyenne des valeurs
+extrémales des termes diagonaux associées aux ddl physiques. De plus
+on prend $\beta=\alpha$.
+
+
+\section{Implémentation}
+
+
+\chapter{Chargement}
+
+
+\section{Calcul du second membre}
+
+
+\chapter{Intégration numérique}
+
+
+\section{Formules de quadrature}
+
+
+\section{Sous-intégration}
+
+
+\chapter{Elements finis}
+
+
+\section{Elements volumiques}
+
+
+\section{Plaques et coques}
+
+
+\section{Poutres}
+
+
+\section{Elements de liaisons}
+
+
+\chapter{Solver}
+
+
+\section{Inversion de systèmes linéaires}
+
+
+\subsection{Méthode directe}
+
+
+\subsection{Méthode itérative}
+
+
+\section{Valeurs et vecteurs propres}
+
+
+\section{Problèmes non-stationnaires}
+
+
+\part{Guide d'initiation}
+
+
+\part{Cahier du programme}
+
+
+\chapter{Architecture}
+
+
+\chapter{Compilation}
+
+\selectlanguage{english}%
+\begin{tabular}{|>{\raggedright}p{1em}>{\raggedright}p{1em}>{\raggedright}p{1em}>{\raggedright}p{1em}||>{\raggedright}p{1em}||>{\raggedright}p{1em}|c|c|c|l|}
+\hline 
+\multicolumn{10}{|c|}{SHIPPABLE PRODUCTS}\tabularnewline
+\hline 
+\hline 
+\multicolumn{6}{|c|}{Tree} & Type & Target name & Filename & Comment\tabularnewline
+\hline 
+\multicolumn{6}{|l|}{\texttt{\textbf{source}}} & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+\tabularnewline
+\selectlanguage{french}%
+\selectlanguage{english}%
+ & \multicolumn{5}{l|}{\texttt{\textbf{kernel}}} & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+\tabularnewline
+\selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \multicolumn{4}{l|}{\texttt{\textbf{haplo}}} & exe & haplo-exe & \texttt{\textbf{haplo}} & SET\_TARGET\_PROPERTIES(haplo-bin PROPERTIES OUTPUT\_NAME haplo)\tabularnewline
+\selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \multicolumn{4}{l|}{\texttt{\textbf{hscripts}}} & hpl & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \texttt{\textbf{{*}.hpl}} & \selectlanguage{french}%
+\selectlanguage{english}%
+\tabularnewline
+\selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \multicolumn{4}{l|}{\texttt{\textbf{include}}} & inc & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \texttt{\textbf{{*}.h}} & \selectlanguage{french}%
+\selectlanguage{english}%
+\tabularnewline
+\selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \multicolumn{4}{l|}{\texttt{\textbf{libhaplo}}} & lib & haplo & \texttt{\textbf{haplo/libhaplo}} & Need bison for parser.y\tabularnewline
+\selectlanguage{french}%
+\selectlanguage{english}%
+ & \multicolumn{5}{l|}{\texttt{\textbf{module}}} & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+\tabularnewline
+\selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \multicolumn{4}{l|}{\texttt{\textbf{elements}}} & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+\tabularnewline
+\selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \multicolumn{3}{l|}{\texttt{\textbf{include}}} & inc & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \texttt{\textbf{{*}.h}} & \selectlanguage{french}%
+\selectlanguage{english}%
+\tabularnewline
+\selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \multicolumn{3}{l|}{\texttt{\textbf{hscripts}}} & hpl & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \texttt{\textbf{{*}.hpl}} & \selectlanguage{french}%
+\selectlanguage{english}%
+\tabularnewline
+\selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \multicolumn{3}{l|}{\texttt{\textbf{src}}} & lib & elements & \texttt{\textbf{haplo/libelements}} & Need PERL for element.c and generation and element.c.\tabularnewline
+\selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \multicolumn{4}{l|}{\texttt{\textbf{fem}}} & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+\tabularnewline
+\selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \multicolumn{3}{l|}{\texttt{\textbf{include}}} & inc & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \texttt{\textbf{{*}.h}} & \selectlanguage{french}%
+\selectlanguage{english}%
+\tabularnewline
+\selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \multicolumn{3}{l|}{\texttt{\textbf{hscripts}}} & hpl & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \texttt{\textbf{{*}.hpl}} & \selectlanguage{french}%
+\selectlanguage{english}%
+\tabularnewline
+\selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \multicolumn{3}{l|}{\texttt{\textbf{src}}} & lib & fem & \texttt{\textbf{haplo/libfem}} & Need PERL for fem.c \tabularnewline
+\selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \multicolumn{4}{l|}{\texttt{\textbf{io}}} & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+\tabularnewline
+\selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \multicolumn{3}{l|}{\texttt{\textbf{include}}} & inc & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \texttt{\textbf{{*}.h}} & \selectlanguage{french}%
+\selectlanguage{english}%
+\tabularnewline
+\selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \multicolumn{3}{l|}{\texttt{\textbf{hscripts}}} & hpl & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \texttt{\textbf{{*}.hpl}} & \selectlanguage{french}%
+\selectlanguage{english}%
+\tabularnewline
+\selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \multicolumn{3}{l|}{\texttt{\textbf{src}}} & lib & io & \texttt{\textbf{haplo/libio}} & Need PERL for io.c \tabularnewline
+\selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \multicolumn{4}{l|}{\texttt{\textbf{net}}} & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+\tabularnewline
+\selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \multicolumn{3}{l|}{\texttt{\textbf{include}}} & inc & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \texttt{\textbf{{*}.h}} & \selectlanguage{french}%
+\selectlanguage{english}%
+\tabularnewline
+\selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \multicolumn{3}{l|}{\texttt{\textbf{hscripts}}} & hpl & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \texttt{\textbf{{*}.hpl}} & \selectlanguage{french}%
+\selectlanguage{english}%
+\tabularnewline
+\selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \multicolumn{3}{l|}{\texttt{\textbf{src}}} & lib & net & \texttt{\textbf{haplo/libnet}} & Need PERL for net.c \tabularnewline
+\hline 
+\hline 
+\multicolumn{6}{|l|}{\texttt{\textbf{build}}} & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+\tabularnewline
+\selectlanguage{french}%
+\selectlanguage{english}%
+ & \multicolumn{5}{l|}{\texttt{\textbf{kernel}}} & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+\tabularnewline
+\selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \multicolumn{4}{l|}{\texttt{\textbf{include}}} & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+\tabularnewline
+\selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \multicolumn{3}{l|}{\texttt{\textbf{haplo}}} & inc & \selectlanguage{french}%
+\selectlanguage{english}%
+ & config.h & Configuration + versionning : use 'svnversion' + substitutions ! \tabularnewline
+\selectlanguage{french}%
+\selectlanguage{english}%
+ & \selectlanguage{french}%
+\selectlanguage{english}%
+ & \multicolumn{4}{l|}{\texttt{\textbf{scripts}}} & exe & \selectlanguage{french}%
+\selectlanguage{english}%
+ & haplo-moodule & \selectlanguage{french}%
+\selectlanguage{english}%
+\tabularnewline
+\hline 
+\end{tabular}
+
+\selectlanguage{french}%
+
+\chapter{Roadmap}
+
+
+\chapter{Licence}
+
+< H A P L O >
+
+Copyright (C) 1999 Nicolas LAURENT <nl@haplo.info> This program is
+free software; you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software
+Foundation; either version 2 of the License, or (at your option) any
+later version. This program is distributed in the hope that it will
+be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+General Public License for more details. You should have received
+a copy of the GNU General Public License along with this program;
+if not, write to the Free Software Foundation, Inc., 59 Temple Place,
+Suite 330, Boston, MA 02111-1307 USA 
+
+Conditions de copie, distribution et modification de la Licence Publique
+Générale GNU.
+
+0. La présente Licence s'applique à tout programme ou tout autre ouvrage
+contenant un avis, apposé par le titulaire des droits d'auteur, stipulant
+qu'il peut être distribué au titre des conditions de la présente Licence
+Publique Générale.
+
+Ci-après, le \textquotedbl{}Programme\textquotedbl{} désigne l'un
+quelconque de ces programmes ou ouvrages, et un \textquotedbl{}ouvrage
+fondé sur le Programme\textquotedbl{} désigne soit le Programme, soit
+un ouvrage qui en dérive au titre des lois sur le droit d'auteur :
+en d'autres termes, un ouvrage contenant le Programme ou une partie
+de ce dernier, soit à l'identique, soit avec des modifications et/ou
+traduit dans un autre langage.
+
+(Ci-après, le terme \textquotedbl{}modification\textquotedbl{} implique,
+sans s'y réduire, le terme traduction)
+
+Chaque concessionaire sera désigné par \textquotedbl{}vous\textquotedbl{}.
+
+Les activités autres que la copie, la distribution et la modification
+ne sont pas couvertes par la présente Licence ; elles sont hors de
+son champ d'application.
+
+L'opération consistant à exécuter le Programme n'est soumise à aucune
+limitation et les sorties du programme ne sont couvertes que si leur
+contenu constitue un ouvrage fondé sur le Programme (indépendamment
+du fait qu'il ait été réalisé par l'exécution du Programme).
+
+La validité de ce qui précède dépend de ce que fait le Programme.
+
+1. Vous pouvez copier et distribuer des copies à l'identique du code
+source du Programme tel que vous l'avez reçu, sur n'importe quel support,
+du moment que vous apposiez sur chaque copie, de manière ad hoc et
+parfaitement visible, l'avis de droit d'auteur adéquat et une exonération
+de garantie ; que vous gardiez intacts tous les avis faisant référence
+à la présente Licence et à l'absence de toute garantie ; et que vous
+fournissiez à tout destinataire du Programme autre que vous-même un
+exemplaire de la présente Licence en même temps que le Programme.
+
+Vous pouvez faire payer l'acte physique de transmission d'une copie,
+et vous pouvez, à votre discrétion, proposer une garantie contre rémunération.
+
+2. Vous pouvez modifier votre copie ou des copies du Programme ou
+n'importe quelle partie de celui-ci, créant ainsi un ouvrage fondé
+sur le Programme, et copier et distribuer de telles modifications
+ou ouvrage selon les termes de l'Article 1 ci-dessus, à condition
+de vous conformer également à chacune des obligations suivantes :
+
+a) Vous devez munir les fichiers modifiés d'avis bien visibles stipulants
+que vous avez modifié ces fichiers, ainsi que la date de chaque modification
+;
+
+b) Vous devez prendre les dispositions nécessaires pour que tout ouvrage
+que vous distribuez ou publiez, et qui, en totalité ou en partie,
+contient ou est fondé sur le Programme - ou une partie quelconque
+de ce dernier - soit concédé comme un tout, à titre gratuit, à n'importe
+quel tiers, au titre des conditions de la présente Licence.
+
+c) Si le programme modifié lit habituellement des instructions de
+façon interactive lorsqu'on l'exécute, vous devez, quand il commence
+son exécution pour ladite utilisation interactive de la manière la
+plus usuelle, faire en sorte qu'il imprime ou affiche une annonce
+comprenant un avis de droit d'auteur ad hoc, et un avis stipulant
+qu'il n'y a pas de garantie (ou bien indiquant que c'est vous qui
+fournissez la garantie), et que les utilisateurs peuvent redistribuer
+le programme en respectant les présentes obligations, et expliquant
+à l'utilisateur comment voir une copie de la présente Licence.
+
+(Exception : si le Programme est lui-même interactif mais n'imprime
+pas habituellement une telle annonce, votre ouvrage fondé sur le Programme
+n'est pas obligé d'imprimer une annonce).
+
+Ces obligations s'appliquent à l'ouvrage modifié pris comme un tout.
+
+Si des éléments identifiables de cet ouvrage ne sont pas fondés sur
+le Programme et peuvent raisonnablement être considérés comme des
+ouvrages indépendants distincts en eux mêmes, alors la présente Licence
+et ses conditions ne s'appliquent pas à ces éléments lorsque vous
+les distribuez en tant qu'ouvrages distincts.
+
+Mais lorsque vous distribuez ces mêmes éléments comme partie d'un
+tout, lequel constitue un ouvrage fondé sur le Programme, la distribution
+de ce tout doit être soumise aux conditions de la présente Licence,
+et les autorisations qu'elle octroie aux autres concessionnaires s'étendent
+à l'ensemble de l'ouvrage et par conséquent à chaque et toute partie
+indifférement de qui l'a écrite.
+
+Par conséquent, l'objet du présent article n'est pas de revendiquer
+des droits ou de contester vos droits sur un ouvrage entièrement écrit
+par vous; son objet est plutôt d'exercer le droit de contrôler la
+distribution d'ouvrages dérivés ou d'ouvrages collectifs fondés sur
+le Programme.
+
+De plus, la simple proximité du Programme avec un autre ouvrage qui
+n'est pas fondé sur le Programme (ou un ouvrage fondé sur le Programme)
+sur une partition d'un espace de stockage ou un support de distribution
+ne place pas cet autre ouvrage dans le champ d'application de la présente
+Licence.
+
+3. Vous pouvez copier et distribuer le Programme (ou un ouvrage fondé
+sur lui, selon l'Article 2) sous forme de code objet ou d'exécutable,
+selon les termes des Articles 1 et 2 ci-dessus, à condition que vous
+accomplissiez l'un des points suivants :
+
+a) L'accompagner de l'intégralité du code source correspondant, sous
+une forme lisible par un ordinateur, lequel doit être distribué au
+titre des termes des Articles 1 et 2 ci-dessus, sur un support habituellement
+utilisé pour l'échange de logiciels; ou,
+
+b) L'accompagner d'une proposition écrite, valable pendant au moins
+trois ans, de fournir à tout tiers, à un tarif qui ne soit pas supérieur
+à ce que vous coûte l'acte physique de réaliser une distribution source,
+une copie intégrale du code source correspondant sous une forme lisible
+par un ordinateur, qui sera distribuée au titre des termes des Articles
+1 et 2 ci-dessus, sur un support habituellement utilisé pour l'échange
+de logiciels; ou,
+
+c) L'accompagner des informations reçues par vous concernant la proposition
+de distribution du code source correspondant. (Cette solution n'est
+autorisée que dans le cas d'une distribution non commerciale et seulement
+si vous avez reçu le programme sous forme de code objet ou d'exécutable
+accompagné d'une telle proposition - en conformité avec le sous-Article
+b ci-dessus.)
+
+Le code source d'un ouvrage désigne la forme favorite pour travailler
+à des modifications de cet ouvrage. Pour un ouvrage exécutable, le
+code source intégral désigne la totalité du code source de la totalité
+des modules qu'il contient, ainsi que les éventuels fichiers de définition
+des interfaces qui y sont associés, ainsi que les scripts utilisés
+pour contrôler la compilation et l'installation de l'exécutable. Cependant,
+par exception spéciale, le code source distribué n'est pas censé inclure
+quoi que ce soit de normalement distribué (que ce soit sous forme
+source ou binaire) avec les composants principaux (compilateur, noyau,
+et autre) du système d'exploitation sur lequel l'exécutable tourne,
+à moins que ce composant lui-même n'accompagne l'exécutable.
+
+Si distribuer un exécutable ou un code objet consiste à offrir un
+accès permettant leur copie depuis un endroit particulier, alors l'offre
+d'un accès équivalent pour copier le code source depuis le même endroit
+compte comme une distribution du code source - même si les tiers ne
+sont pas contraints de copier le source en même temps que le code
+objet.
+
+4. Vous ne pouvez copier, modifier, concéder en sous-licence, ou distribuer
+le Programme, sauf tel qu'expressément prévu par la présente Licence.
+Toute tentative de copier, modifier, concéder en sous-licence, ou
+distribuer le Programme d'une autre manière est réputée non valable,
+et met immédiatement fin à vos droits au titre de la présente Licence.
+Toutefois, les tiers ayant reçu de vous des copies, ou des droits,
+au titre de la présente Licence ne verront pas leurs autorisations
+résiliées aussi longtemps que ledits tiers se conforment pleinement
+à elle.
+
+5. Vous n'êtes pas obligé d'accepter la présente Licence étant donné
+que vous ne l'avez pas signée. Cependant, rien d'autre ne vous accorde
+l'autorisation de modifier ou distribuer le Programme ou les ouvrages
+fondés sur lui. Ces actions sont interdites par la loi si vous n'acceptez
+pas la présente Licence. En conséquence, en modifiant ou distribuant
+le Programme (ou un ouvrage quelconque fondé sur le Programme), vous
+signifiez votre acceptation de la présente Licence en le faisant,
+et de toutes ses conditions concernant la copie, la distribution ou
+la modification du Programme ou d'ouvrages fondés sur lui.
+
+6. Chaque fois que vous redistribuez le Programme (ou n'importe quel
+ouvrage fondé sur le Programme), une licence est automatiquement concédée
+au destinataire par le concédant originel de la licence, l'autorisant
+à copier, distribuer ou modifier le Programme, sous réserve des présentes
+conditions. Vous ne pouvez imposer une quelconque limitation supplémentaire
+à l'exercice des droits octroyés au titre des présentes par le destinataire.
+Vous n'avez pas la responsabilité d'imposer le respect de la présente
+Licence à des tiers.
+
+7. Si, conséquement à une décision de justice ou l'allégation d'une
+transgression de brevet ou pour toute autre raison (non limitée à
+un probleme de brevet), des obligations vous sont imposées (que ce
+soit par jugement, conciliation ou autre) qui contredisent les conditions
+de la présente Licence, elles ne vous excusent pas des conditions
+de la présente Licence. Si vous ne pouvez distribuer de manière à
+satisfaire simultanément vos obligations au titre de la présente Licence
+et toute autre obligation pertinente, alors il en découle que vous
+ne pouvez pas du tout distribuer le Programme. Par exemple, si une
+licence de brevet ne permettait pas une redistribution sans redevance
+du Programme par tous ceux qui reçoivent une copie directement ou
+indirectement par votre intermédiaire, alors la seule façon pour vous
+de satisfaire à la fois à la licence du brevet et à la présente Licence
+serait de vous abstenir totalement de toute distribution du Programme.
+
+Si une partie quelconque de cet article est tenue pour nulle ou inopposable
+dans une circonstance particulière quelconque, l'intention est que
+le reste de l'article s'applique. La totalité de la section s'appliquera
+dans toutes les autres circonstances.
+
+Cet article n'a pas pour but de vous induire à transgresser un quelconque
+brevet ou d'autres revendications à un droit de propriété ou à contester
+la validité de la moindre de ces revendications ; cet article a pour
+seul objectif de protéger l'intégrité du système de distribution du
+logiciel libre, qui est mis en oeuvre par la pratique des licenses
+publiques. De nombreuses personnes ont fait de généreuses contributions
+au large spectre de logiciels distribués par ce système en se fiant
+à l'application cohérente de ce système ; il appartient à chaque auteur/donateur
+de décider si il ou elle veut distribuer du logiciel par l'intermédiaire
+d'un quelconque autre système et un concessionaire ne peut imposer
+ce choix.
+
+Cet article a pour but de rendre totalement limpide ce que l'on pense
+être une conséquence du reste de la présente Licence.
+
+8. Si la distribution et/ou l'utilisation du Programme est limitée
+dans certains pays que ce soit par des brevets ou par des interfaces
+soumises au droit d'auteur, le titulaire originel des droits d'auteur
+qui décide de couvrir le Programme par la présente Licence peut ajouter
+une limitation géographique de distribution explicite qui exclue ces
+pays afin que la distribution soit permise seulement dans ou entre
+les pays qui ne sont pas ainsi exclus. Dans ce cas, la présente Licence
+incorpore la limitation comme si elle était écrite dans le corps de
+la présente Licence.
+
+9. La Free Software Foundation peut, de temps à autre, publier des
+versions révisées et/ou nouvelles de la Licence Publique Générale.
+De telles nouvelles versions seront similaires à la présente version
+dans l'esprit mais pourront différer dans le détail pour prendre en
+compte de nouvelles problématiques ou inquiétudes.
+
+Chaque version possède un numéro de version la distinguant. Si le
+Programme précise le numéro de version de la présente Licence qui
+s'y applique et \textquotedbl{}une version ultérieure quelconque\textquotedbl{},
+vous avez le choix de suivre les conditions de la présente version
+ou de toute autre version ultérieure publiée par la Free Software
+Foundation. Si le Programme ne spécifie aucun numéro de version de
+la présente Licence, vous pouvez choisir une version quelconque publiée
+par la Free Software Foundation à quelque moment que ce soit.
+
+10. Si vous souhaitez incorporer des parties du Programme dans d'autres
+programmes libres dont les conditions de distribution sont différentes,
+écrivez à l'auteur pour lui en demander l'autorisation. Pour les logiciels
+dont la Free Software Foundation est titulaire des droits d'auteur,
+écrivez à la Free Software Foundation ; nous faisons parfois des exceptions
+dans ce sens. Notre décision sera guidée par le double objectif de
+préserver le statut libre de tous les dérivés de nos logiciels libres
+et de promouvoir le partage et la réutilisation des logiciels en général.
+ABSENCE DE GARANTIE
+
+11. COMME LA LICENCE DU PROGRAMME EST CONCEDEE A TITRE GRATUIT, AUCUNE
+GARANTIE NE S'APPLIQUE AU PROGRAMME, DANS LES LIMITES AUTORISEES PAR
+LA LOI APPLICABLE. SAUF MENTION CONTRAIRE ECRITE, LES TITULAIRES DU
+DROIT D'AUTEUR ET/OU LES AUTRES PARTIES FOURNISSENT LE PROGRAMME \textquotedbl{}EN
+L'ETAT\textquotedbl{}, SANS AUCUNE GARANTIE DE QUELQUE NATURE QUE
+CE SOIT, EXPRESSE OU IMPLICITE, Y COMPRIS, MAIS SANS Y ETRE LIMITE,
+LES GARANTIES IMPLICITES DE COMMERCIABILITE ET DE LA CONFORMITE A
+UNE UTILISATION PARTICULIERE. VOUS ASSUMEZ LA TOTALITE DES RISQUES
+LIES A LA QUALITE ET AUX PERFORMANCES DU PROGRAMME. SI LE PROGRAMME
+SE REVELAIT DEFECTUEUX, LE COUT DE L'ENTRETIEN, DES REPARATIONS OU
+DES CORRECTIONS NECESSAIRES VOUS INCOMBENT INTEGRALEMENT.
+
+12. EN AUCUN CAS, SAUF LORSQUE LA LOI APPLICABLE OU UNE CONVENTION
+ECRITE L'EXIGE, UN TITULAIRE DE DROIT D'AUTEUR QUEL QU'IL SOIT, OU
+TOUTE PARTIE QUI POURRAIT MODIFIER ET/OU REDISTRIBUER LE PROGRAMME
+COMME PERMIS CI-DESSUS, NE POURRAIT ETRE TENU POUR RESPONSABLE A VOTRE
+EGARD DES DOMMAGES, INCLUANT LES DOMMAGES GENERIQUES, SPECIFIQUES,
+SECONDAIRES OU CONSECUTIFS, RESULTANT DE L'UTILISATION OU DE L'INCAPACITE
+D'UTILISER LE PROGRAMME (Y COMPRIS, MAIS SANS Y ETRE LIMITE, LA PERTE
+DE DONNEES, OU LE FAIT QUE DES DONNEES SOIENT RENDUES IMPRECISES,
+OU LES PERTES EPROUVEES PAR VOUS OU PAR DES TIERS, OU LE FAIT QUE
+LE PROGRAMME ECHOUE A INTEROPERER AVEC UN AUTRE PROGRAMME QUEL QU'IL
+SOIT) MEME SI LE DIT TITULAIRE DU DROIT D'AUTEUR OU LE PARTIE CONCERNEE
+A ETE AVERTI DE L'EVENTUALITE DE TELS DOMMAGES. FIN DES CONDITIONS
+Comment appliquer ces conditions à vos nouveaux programmes
+
+Si vous développez un nouveau programme, et si vous voulez qu'il soit
+de la plus grande utilité possible pour le public, le meilleur moyen
+d'y parvenir est d'en faire un logiciel libre que chacun peut redistribuer
+et modifier au titre des présentes conditions.
+
+Pour ce faire, munissez le programme des avis qui suivent. Le plus
+sûr est de les ajouter au début de chaque fichier source pour véhiculer
+le plus efficacement possible l'absence de toute garantie ; chaque
+fichier devrait aussi contenir au moins la ligne \textquotedbl{}copyright\textquotedbl{}
+et une indication de l'endroit où se trouve l'avis complet.
+
+{[}Une ligne donnant le nom du programme et une courte idée de ce
+qu'il fait.{]} Copyright (C) {[}année{]} {[}nom de l'auteur{]} Ce
+programme est un logiciel libre ; vous pouvez le redistribuer et/ou
+le modifier au titre des clauses de la Licence Publique Générale GNU,
+telle que publiée par la Free Software Foundation ; soit la version
+2 de la Licence, ou (à votre discrétion) une version ultérieure quelconque.
+Ce programme est distribué dans l'espoir qu'il sera utile, mais SANS
+AUCUNE GARANTIE ; sans même une garantie implicite de COMMERCIABILITE
+ou DE CONFORMITE A UNE UTILISATION PARTICULIERE. Voir la Licence Publique
+Générale GNU pour plus de détails. Vous devriez avoir reçu un exemplaire
+de la Licence Publique Générale GNU avec ce programme ; si ce n'est
+pas le cas, écrivez à la Free Software Foundation Inc., 51 Franklin
+Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
+Ajoutez aussi des informations sur la manière de vous contacter par
+courrier électronique et courrier postal.
+
+Si le programme est interactif, faites en sorte qu'il affiche un court
+avis tel que celui-ci lorsqu'il démarre en mode interactif :
+
+Gnomovision version 69, Copyright (C) année nom de l'auteur Gnomovision
+n'est accompagné d'ABSOLUMENT AUCUNE GARANTIE ; pour plus de détails
+tapez \textquotedbl{}show w\textquotedbl{}. Ceci est un logiciel libre
+et vous êtes invité à le redistribuer en respectant certaines obligations
+; pour plus de détails tapez \textquotedbl{}show c\textquotedbl{}.
+
+Les instructions hypothétiques \textquotedbl{}show w\textquotedbl{}
+et \textquotedbl{}show c\textquotedbl{} sont supposées montrer les
+parties ad hoc de la Licence Publique Générale. Bien entendu, les
+instructions que vous utilisez peuvent porter d'autres noms que \textquotedbl{}show
+w\textquotedbl{} et \textquotedbl{}show c\textquotedbl{} ; elles peuvent
+même être des clics de souris ou des éléments d'un menu ou tout ce
+qui convient à votre programme.
+
+Vous devriez aussi obtenir de votre employeur (si vous travaillez
+en tant que développeur) ou de votre école, si c'est le cas, qu'il
+(ou elle) signe une \textquotedbl{}renonciation aux droits d'auteur\textquotedbl{}
+concernant le programme, si nécessaire. Voici un exemple (changez
+les noms) :
+
+Yoyodyne, Inc., déclare par la présente renoncer à toute prétention
+sur les droits d'auteur du programme \textquotedbl{}Gnomovision\textquotedbl{}
+(qui fait des avances aux compilateurs) écrit par James Hacker. {[}signature
+de Ty Coon{]}, 1er avril 1989 Ty Coon, Président du Vice
+
+La présente Licence Publique Générale n'autorise pas l'incorporation
+de votre programme dans des programmes propriétaires. Si votre programme
+est une bibliothèque de sous-programmes, vous pouvez considérer plus
+utile d'autoriser l'édition de liens d'applications propriétaires
+avec la bibliothèque. Si c'est ce que vous voulez faire, utilisez
+la GNU Lesser General Public License au lieu de la présente Licence. 
+
+
+
+\bibliographystyle{plain}
+\bibliography{biblio}
+
+\end{document}

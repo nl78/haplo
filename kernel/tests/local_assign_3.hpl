@@ -1,0 +1,23 @@
+#
+# $Id: local_assign_3.hpl,v 1.2 2002/03/28 21:26:43 nicoo Exp $
+#
+
+f=function(b)
+{
+	ob=0;
+
+	c=function(d)
+	{
+		ob=d+d;
+	};
+};
+
+
+
+a=f(1);
+
+a(2); # Should produce an error!
+
+1;
+
+quit;

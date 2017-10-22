@@ -1,0 +1,11 @@
+
+factsub=0;
+fact=function(n) { if (n>1) n*factsub(n-1); else 1; };
+factsub=function(n) { fact(n); };
+
+
+if (! fact(4) == 24)
+	abort();
+
+quit;
+

@@ -1,0 +1,94 @@
+/*
+ * Copyright (C) 1998-2004 Nicolas LAURENT
+ * This file is part of `Haplo'
+ * 
+ *
+ * `Haplo'  is free software;  you can  redistribute  it and/or modify it
+ * under the terms of the GNU Library General Public License as published
+ * by the Free Software Foundation;  either version 2  of the License, or
+ * (at your option) any later version.
+ *
+ * `Haplo' is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the  implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the  GNU General Public License
+ * for more details.
+ * 
+ * You should have  received  a copy of the   GNU General Public  License
+ * along with `Haplo'.  If not, write to  the
+ *
+ *                                        Free Software Foundation,  Inc.
+ *                                        675 Mass Ave, Cambridge, MA
+ *                                        02139, USA.
+ *
+ */
+
+#ifndef __HAPLO_HAPLO_CONFIG_H__
+#define __HAPLO_HAPLO_CONFIG_H__
+
+#include <haplo/defs.h>
+
+__HAPLO_BEGIN_DECLS
+
+/* Compile time configuration : availability of headers and functions */
+#ifdef HAPLO
+#cmakedefine HAVE_UNISTD_H
+#cmakedefine HAVE_DIRECT_H
+#cmakedefine HAVE_IO_H
+#cmakedefine HAVE_DL_H
+#cmakedefine HAVE_DLFCN_H
+#cmakedefine HAVE_WINDOWS_H
+#cmakedefine HAVE_SYS_TIME_H
+#cmakedefine HAVE_SYS_RESOURCE_H
+
+#cmakedefine HAVE_LOG
+#endif /* HAPLO */
+
+
+#define HAPLO_MAJOR			@HAPLO_MAJOR@
+#define HAPLO_MINOR			@HAPLO_MINOR@
+#define HAPLO_SCM			"@HAPLO_SCM@"
+#define HAPLO_BUILD			"@CMAKE_BUILD_TYPE@"
+
+#define HAPLO_HOME_DEFAULT		"@CMAKE_INSTALL_PREFIX@"
+#define HAPLO_SEPARATOR			"/"
+#define HAPLO_INCLUDE_DIR		"include"
+#define HAPLO_MODULE_DIR		"lib/haplo"
+#define HAPLO_SCRIPTS_DIR		"share/haplo"
+
+/*
+ * Plugins implementation
+ */
+#define HAPLO_MODULE_IMPL_NONE		0
+#define HAPLO_MODULE_IMPL_DL		1
+#define HAPLO_MODULE_IMPL_DLD		2
+#define HAPLO_MODULE_IMPL_WIN32		3
+#define HAPLO_MODULE_IMPL		@HAPLO_MODULE_IMPL@
+#define HAPLO_MODULE_PREFIX		"@HAPLO_MODULE_PREFIX@"
+#define HAPLO_MODULE_SUFFIX		"@HAPLO_MODULE_SUFFIX@"
+
+/*
+ * Configuration
+ */
+#define HAPLO_HOST_OS			"@CMAKE_SYSTEM@"
+#define HAPLO_OPTIONS			"@HAPLO_OPTIONS@"
+
+/*
+ * i18n
+ */
+#define HAPLO_PACKAGE			"haplo"
+#ifdef ENABLE_NLS
+#	ifndef IN_LIBINTL
+#		include <libintl.h>
+#	endif
+#	define _(str)			gettext(str)
+#	define N_(str)			(str)
+#else
+#	define _(str)			(str)
+#	define N_(str)			(str)
+#endif /* ENABLE_NLS */
+
+
+__HAPLO_END_DECLS
+
+#endif /* __HAPLO_HAPLO_CONFIG_H__ */
+

@@ -1,0 +1,14 @@
+#
+# $Id: nested_function_15.hpl,v 1.1 2001/11/07 21:29:39 nicoo Exp $
+#
+
+a=function(t) { function() { t; }; };
+
+one=a(1);
+two=a(2);
+
+if (! (one() == 1))
+	abort();
+
+quit;
+

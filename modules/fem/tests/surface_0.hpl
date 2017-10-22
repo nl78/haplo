@@ -1,0 +1,69 @@
+use("fem");
+
+l=1;
+
+ma=meshing(2);
+
+
+
+node_add(ma, [ -2*l, -2*l ]);
+node_add(ma, [    0, -2*l ]);
+node_add(ma, [  2*l, -2*l ]);
+
+node_add(ma, [   -l,   -l ]);
+node_add(ma, [    l,   -l ]);
+
+node_add(ma, [ -2*l,    0 ]);
+node_add(ma, [    0,    0 ]);
+node_add(ma, [  2*l,    0 ]);
+
+node_add(ma, [   -l,    l ]);
+node_add(ma, [    l,    l ]);
+
+node_add(ma, [ -2*l,  2*l ]);
+node_add(ma, [    0,  2*l ]);
+node_add(ma, [  2*l,  2*l ]);
+
+
+mesh_add(ma, [ 1, 2, 4 ]);
+mesh_add(ma, [ 2, 7, 4 ]);
+mesh_add(ma, [ 7, 6, 4 ]);
+mesh_add(ma, [ 6, 1, 4 ]);
+
+mesh_add(ma, [ 2, 3, 5 ]);
+mesh_add(ma, [ 3, 8, 5 ]);
+mesh_add(ma, [ 8, 7, 5 ]);
+mesh_add(ma, [ 7, 2, 5 ]);
+
+mesh_add(ma, [ 6, 7, 9 ]);
+mesh_add(ma, [ 7,12, 9 ]);
+mesh_add(ma, [12,11, 9 ]);
+mesh_add(ma, [11, 6, 9 ]);
+
+mesh_add(ma, [ 7, 8,10 ]);
+mesh_add(ma, [ 8,13,10 ]);
+mesh_add(ma, [13,12,10 ]);
+mesh_add(ma, [12, 7,10 ]);
+
+print(ma);
+
+renum(ma, 1);
+print(ma);
+mo=model(ma);
+
+S  = surface(mo);
+S2 = (l*4)^2;
+
+Ix = inertia(mo, 0);
+Iy = inertia(mo, 1);
+
+I= (l*4)^4/12;
+
+if (fabs(I-Ix)>1e-6)
+	abort();
+
+1;
+
+quit;
+
+###1

@@ -1,0 +1,10 @@
+a=function(b)
+{
+	[b, b];
+};
+
+b=a(a);
+
+b->1(1);
+
+quit;

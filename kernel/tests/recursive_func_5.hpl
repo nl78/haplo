@@ -1,0 +1,20 @@
+a=function(t)
+{
+	aa=function(n)
+	{
+		print("aa("+n+") t="+t);
+		if (n>t)
+			aa(n-1)*n;
+		else
+		1;
+	};
+};
+
+fact=a(1);
+g=a(3);
+
+if (! fact(4) == 24)
+	abort();
+
+quit;
+

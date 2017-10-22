@@ -1,0 +1,5 @@
+INSTALL(FILES haplo.h DESTINATION include)
+
+ADD_SUBDIRECTORY (haplo)
+
+

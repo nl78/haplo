@@ -1,0 +1,9 @@
+
+
+LIST=[ 1 , 2];
+INDICE="a";
+
+LIST->INDICE;
+
+
+quit;

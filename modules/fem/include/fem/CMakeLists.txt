@@ -1,0 +1,24 @@
+INSTALL(FILES
+		analysis.h
+		bc.h
+		cara.h
+		dof.h
+		eigen.h
+		element.h
+		geom.h
+		group.h
+		integration.h
+		load.h
+		material.h
+		matrix.h
+		meshing.h
+		model.h
+		module.h
+		numbering.h
+		post.h
+		problem.h
+		property.h
+		renum.h
+		solver.h
+		vectorized.h
+	DESTINATION include/fem)

@@ -1,0 +1,11 @@
+fact=function(n)
+{
+	fun=function(nn) { if (nn>1) nn*fun(nn-1); else 1; };
+	fun(n);
+
+};
+
+if (! fact(4) == 24)
+	abort();
+
+quit;

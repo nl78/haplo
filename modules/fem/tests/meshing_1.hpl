@@ -1,0 +1,34 @@
+#
+# $Id: meshing_1.hpl,v 1.6 2003/08/25 21:00:23 nicoo Exp $
+#
+
+use("fem");
+
+ma=meshing();
+
+node_add(ma, [ 1 ]);
+node_add(ma, [ 2 ]);
+node_add(ma, [ 3 ]);
+node_add(ma, 1500, [ 5 ]);
+
+print(ma);
+
+
+mesh_add(ma, [ 1, 2 ]);
+print(ma);
+
+mesh_add(ma, [ 1, 2, 3]);
+mesh_add(ma, [ 1, 2, 3]);
+mesh_add(ma, [ 1, 2, 2, 1 ]);
+mesh_add(ma, [ 1, 1500 ]);
+
+print(ma);
+
+
+print(ma);
+
+
+1;
+quit;
+
+###1

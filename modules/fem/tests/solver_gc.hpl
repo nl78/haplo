@@ -1,0 +1,23 @@
+#
+# $Id: solver_gc.hpl,v 1.6 2003/10/05 20:06:40 nicoo Exp $
+#
+
+use("fem");
+
+p=10;
+A=matrix(p, 1);
+b=vector(p);
+set(b, 1, 2);
+
+
+x=solve_cg(A, b);
+
+print(max(A*x-b));
+if (max(A*x-b)< 1.e-6)
+	1;
+else
+	0;
+
+quit;
+
+###1

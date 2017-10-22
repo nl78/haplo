@@ -1,0 +1,6 @@
+
+
+load_library("doesnotexist"); # should produce an error
+
+quit;
+

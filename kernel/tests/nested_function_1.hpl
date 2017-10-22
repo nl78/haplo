@@ -1,0 +1,20 @@
+#
+# $Id: nested_function_1.hpl,v 1.1.1.1 2001/10/21 08:25:16 nicoo Exp $
+#
+# double call
+#
+a=function(a, b)
+{
+	function(c)
+	{
+		a+b+c;
+	};
+};
+a(1,2)(3);
+
+if (! (a(2,3)(4) == 9))
+	abort();
+
+
+quit;
+

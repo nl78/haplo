@@ -1,0 +1,17 @@
+#
+# $Id: function_6.hpl,v 1.1 2001/12/05 00:20:10 nicoo Exp $
+#
+
+a=function()
+{
+	1;
+};
+
+a=2+a();
+
+if (! (a == 3))
+	abort();
+
+quit;
+
+###1

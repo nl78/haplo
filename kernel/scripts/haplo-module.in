@@ -1,0 +1,455 @@
+#@PERL_FOR_SCRIPTS@
+#
+# Copyright (C) 1998-2004 Nicolas LAURENT
+# This file is part of `Haplo'
+# 
+#
+# `Haplo'  is free software;  you can  redistribute  it and/or modify it
+# under the terms of the GNU Library General Public License as published
+# by the Free Software Foundation;  either version 2  of the License, or
+# (at your option) any later version.
+#
+# `Haplo' is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the  implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.  See the  GNU General Public License
+# for more details.
+# 
+# You should have  received  a copy of the   GNU General Public  License
+# along with `Haplo'.  If not, write to  the
+#
+#                                        Free Software Foundation,  Inc.
+#                                        675 Mass Ave, Cambridge, MA
+#                                        02139, USA.
+#
+
+
+use strict;
+
+
+my %type;
+my %type_disp;
+my %type_free;
+my %type_copy;
+
+my %func_decl;			# HaploFunction <-> Full line of decl
+
+my $cpp_options="";
+my $module_name="";
+my $module_init="";
+my $module_fini="";
+
+
+#
+# c_to_name()
+#
+# Transform C types to haplo ones
+#
+sub c_to_name {
+  $_=shift;
+
+  # Exception for list of object!
+  return 'list' if m/haplo_olist_t/;
+
+  return undef if m/void/;
+
+  # General case
+  s/_t$//g;
+  s/^.*?_//;
+
+  return $_;
+}
+
+
+#
+# c_to_type
+#
+# Add good suffixe or change it to NULL
+#
+sub c_to_type {
+  $_=shift;
+  $_=c_to_name($_);
+  if ($_) {
+    s/^/\_haplo_type_/;
+  } else {
+    $_="NULL";
+  }
+  return $_;
+}
+
+#
+# type
+#
+# [ qualifiers name ]
+#
+sub type {
+  my $ret=shift;
+
+  my @type;
+	
+  if (! ($ret  =~ s/\*.*//)) {
+    # void or missing `*' ?
+    #		print "type: ret=$ret\n";
+    if ( $ret =~ m/\bvoid\b/) {
+      return qw('' NULL);
+    } else {
+      print "*** Missing `*' in `$ret'\n";
+      return qw('' '');
+    }
+  } else {
+    if ($ret =~ s/\bconst\b//) {
+      $type[0]=':';		# IN
+    } else {
+      $type[0]='!';		# OUT
+    }
+    if ($ret =~ s/\b__haplo_protected\b//) {
+      if ($type[0] == ':') {
+	$type[0] = '/';		# IN+PROTECT
+      } else {
+	$type[0] = '*';		# OUT+PROTECT
+      }
+    }
+  }
+  $ret =~ s/^\s*//;
+  $ret =~ s/\s*$//;
+	
+  $type[1] = &c_to_name($ret);
+
+  return @type;
+}
+
+
+#
+# addhash
+#
+
+sub addhash {
+  my $hash=shift;
+  my $f=shift;
+  my $arg=shift;
+
+  my @type=&type($arg);
+
+  if ($type[1] eq '') {
+    print "Missing `*'\n";
+    return 0;
+  }
+  #	print "Add  <", $f, "> for <", $type[1], "> in map ", $hash, "\n";
+  $$hash{$type[1]}=$f;
+  return 1;
+}
+
+
+#
+# addsig
+#
+sub addsig {
+  my $hash=shift;
+  my $name=shift;
+  my $hname=shift;
+  my $ret=shift;
+  my $args=shift;
+  my @args=@$args;
+
+  my $arg;
+  my $decl='';	
+
+  if ($ret eq 'NULL' ) {
+    $decl='';
+  } else {
+    $decl = $ret;
+  }
+
+  foreach $arg (@args) {
+    $arg =~ s/^\s*//;
+    $arg =~ s/\s*$//;
+
+    my @type=&type($arg);
+
+    last if $type[1] eq 'NULL';
+
+    $decl .= $type[0] . $type[1];
+
+    $type{$type[1]} = '';
+  }
+	
+
+  $hname =~ s/^\s*//;
+  $hname =~ s/\s*$//;
+  $decl='"' . $hname . '", HAPLO_FUNC(' . $name . '), "'. $decl . '"';
+
+  $$hash{$name} = $decl;
+
+  #print "Adding $name";
+}
+
+
+#
+# function
+#
+sub parse_function {
+  my $line=shift;
+
+  my $fqn;			# Function name and its attributes
+  my $args;			# args to parse
+  my $name;			# c-function name
+  my $hname;			# haplo-name
+  my $ret;			# return type
+  my $type;			# type of declaration
+  my @arg;			# arguments to parse
+
+  ($fqn, $args)=split(/\(/, $line);
+  chop($args);			# remove trailling )
+
+  $name =  $fqn;
+  $name =~ s/^.*\W//;
+
+  $type = $fqn;
+  $type =~ s/!//;
+  $type =~ s/!.*//;
+
+  $hname= $fqn;
+  $hname=~ s/!//;
+  $hname=~ s/.*?!//;
+  $hname=~ s/!.*//;
+  $hname=~ s/^\s*//;
+  $hname=~ s/\s*$//;
+	
+  $fqn  =~ s/.*!//;
+  $fqn  =~ s/\bextern\b//;
+  $fqn  =~ s/\b"C"\b//;
+
+  #	print "FQN=$fqn (name=$name hname=$hname type=$type args=$args)\n";
+
+  $ret=$fqn;
+  #@type = &type($ret);
+  #print "TYPE: ($ret) ", $type[0], " : ", $type[1], "\n";
+	
+  @arg=split(/,/, $args);
+  if ($type eq 'func') {
+    my @rettype = &type($ret);
+    #		print "-> ret=$rettype[1]\n";
+    addsig(\%func_decl, $name, $hname, $rettype[1], \@arg);
+  } elsif ($type eq 'copy') {
+    addhash(\%type_copy, $name, $arg[0]);
+  } elsif ($type eq 'free') {
+    addhash(\%type_free, $name, $arg[0]);
+  } elsif ($type eq 'disp') {
+    addhash(\%type_disp, $name, $arg[0])
+  }
+}
+
+#
+# type_finish
+#
+
+sub type_finish {
+  my $map;
+  foreach $map (\%type_disp, \%type_copy, \%type_free) {
+    my $struct;
+    foreach $struct(keys(%$map)) {
+      my $type=$struct;
+      if ($type{$type} && ( ! $type{$type} eq $struct )) {
+	print "*** Type missmatch for ", $struct, "\n";
+      } else {
+	$type{$type}=$struct;
+      }
+    }
+  }
+}
+
+
+#
+# scan
+#
+sub scan {
+  my $filename=shift;
+  my $content="";
+  my $CC;
+
+  #	print "Scanning ", $filename, "\n\n";
+  if ( $ENV{'CC'} ) {
+    $CC=$ENV{'CC'};
+  } else {
+    $CC="cc";
+  }
+	
+  my $cmd = "$CC $cpp_options -DHAPLO_MODULE -E $filename";
+  #print "CMD: $cmd\n";
+  open(FH, $cmd . ' |') || die "Cannot open: $!";
+  while (<FH>) {
+    s/\#.*//; 			# remove preprocessor directives
+    chomp;
+    $content .= $_;
+  }
+  close(FH);
+
+  # Remove nested block
+  while ($content =~ s/\{[^{}]*\}/;/gs) {
+    ;				# do nothing
+  }
+
+  foreach (split(/;/, $content)) {
+    # Trim line
+    s/^\s*//;
+    s/\s*$//;
+
+    # treat only functions that need haplo interface
+    next if ! m/!/;
+
+    parse_function($_);
+  }
+  type_finish();
+}
+
+
+#
+# display_type
+#
+sub display_type {
+  print OUT 'static haplo_type_descr_t ', $module_name;
+  print OUT "_haplo_types[]={\n";
+
+  my $t;
+  foreach $t (keys(%type)) {
+    if ($type{$t}) {
+      print OUT "\t", '{ "', $t, '", ';
+      if ($type_disp{$type{$t}}) {
+	print OUT 'HAPLO_TYPE_DISPLAY(';
+	print OUT $type_disp{$type{$t}};
+	print OUT '), ';
+      } else {
+	print OUT 'HAPLO_TYPE_DISPLAY(NULL), ';
+      }
+      if ($type_free{$type{$t}}) {
+	print OUT 'HAPLO_TYPE_FREE(';
+	print OUT $type_free{$type{$t}};
+	print OUT '), ';
+      } else {
+	print OUT 'HAPLO_TYPE_FREE(NULL), ';
+      }
+      if ($type_copy{$type{$t}}) {
+	print OUT 'HAPLO_TYPE_COPY(';
+	print OUT $type_copy{$type{$t}};
+	print OUT ')';
+      } else {
+	print OUT 'HAPLO_TYPE_COPY(NULL)';
+      }
+      print OUT " },\n";
+    }
+  }
+  print OUT "\t{ NULL, HAPLO_TYPE_DISPLAY(NULL), HAPLO_TYPE_FREE(NULL), HAPLO_TYPE_COPY(NULL) }\n};\n\n";
+}
+
+#
+# display_func
+#
+sub display_func {
+  print OUT 'static haplo_func_descr_t ', $module_name;
+  print OUT "_haplo_functions[]={\n";
+  foreach (keys(%func_decl)) {
+    print OUT "\t{ ", $func_decl{$_}, "},\n";
+  }
+  print OUT "\t{ NULL, NULL, NULL, NULL }\n};\n\n";
+}
+
+#
+# display
+#
+sub display {
+  my $base=shift;
+
+  $base =~ s@.*/@@;
+	
+  print OUT "/*\n";
+  print OUT ' * This file has been automatically generated by ';
+  print OUT ' haplo-module.', "\n";
+  print OUT " * Do not edit unless you know exactly what you do. ";
+  print OUT ":-)\n";
+  print OUT " */\n\n";
+  print OUT "#include <$base>\n\n";
+  print OUT "#include <haplo.h>\n";
+  print OUT "\n";
+
+  if ($module_init) {
+    print OUT 'extern int ', $module_init, "(const char *options);\n";
+  }
+  if ($module_fini) {
+    print OUT 'extern int ', $module_fini, "(const char *options);\n";
+  }
+
+  print OUT "\n";
+  display_type();
+  display_func();
+	
+  print OUT 'static const char *', $module_name;
+  print OUT "_dependencies[]={ HAPLO_MODULE_DEPEND, NULL};\n\n";
+  print OUT 'volatile haplo_module_t ', $module_name;
+  print OUT "_haplo_module={\n";
+  print OUT "\t{ HAPLO_MAG0, HAPLO_MAG1, HAPLO_MAG2, HAPLO_MAG3, HAPLO_MAG4 },\n";
+  print OUT "\tHAPLO_MODULE_TITLE,\n";
+  print OUT "\tHAPLO_MODULE_AUTHOR,\n";
+  print OUT "\tHAPLO_MODULE_VERSION,\n";
+  print OUT "\t", $module_name, "_dependencies,\n";
+  print OUT "\tHAPLO_MODULE_REQUIRED_MAJOR,\n";
+  print OUT "\tHAPLO_MODULE_REQUIRED_MINOR,\n";
+  print OUT "\t", $module_name, "_haplo_functions,\n";
+  print OUT "\t", $module_name, "_haplo_types,\n";
+  if ($module_init) {
+    print OUT "\t", $module_init, ",\n";
+  } else {
+    print OUT "\tNULL,\n";
+  }
+  if ($module_fini) {
+    print OUT "\t", $module_fini, "\n";
+  } else {
+    print OUT "\tNULL\n";
+  }
+  print OUT "};\n";
+
+}
+
+my $input;
+my $output;
+foreach (@ARGV) {
+  if ( m/-I/ ) {
+    $cpp_options .= $_ . " ";
+    next;
+  }
+
+  if ( m/-D/) {
+    $cpp_options .= $_ . " ";
+    next;
+  }
+
+  if ( m/-o/ ) {
+    $output = $_;
+    $output =~ s/-o//;
+    next;
+  }
+  if ( m/-e/ ) {
+    $module_init = $_;
+    $module_init =~ s/-e//;
+    next;
+  }
+  if ( m/-f/ ) {
+    $module_fini = $_;
+    $module_fini =~ s/-f//;
+    next;
+  } else {
+    $input=$_;
+  }
+}
+
+#print "HAPLO-MODULE --BEGIN\n";
+scan($input);
+
+
+if ( ! $module_name ) {
+	$module_name = $input;
+	$module_name =~ s@.*/@@;
+	$module_name =~ s@\.h@@;
+}
+open(OUT, "> $output");
+display($input);
+close(OUT);
+#print "HAPLO_MODULE --END\n";

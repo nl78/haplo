@@ -1,0 +1,9 @@
+haplo (0.9) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Nicolas LAURENT <nl@haplo.info>  Tue, 26 Oct 2004 20:05:03 +0200
+
+Local variables:
+mode: debian-changelog
+End:

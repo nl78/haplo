@@ -1,0 +1,22 @@
+Source: haplo
+Priority: optional
+Maintainer: Nicolas LAURENT <nl@haplo.info>
+Build-Depends: debhelper (>= 4.0.0)
+Standards-Version: 3.6.1
+Description: A finite element analysis software
+ Haplo main application domain is mechanical and structural  analysis.
+ Haplo user interface  is based on specific  object-oriented-language
+ which  could be  used  for  any framework.
+
+
+Package: haplo
+Section: math
+Architecture: any
+Depends: libhaplo1 (= ${Source-Version})
+Description: A finite element analysis software
+ Haplo main application domain is mechanical and structural  analysis.
+ Haplo user interface  is based on specific  object-oriented-language
+ which  could be  used  for  any framework.
+ .
+ This package contains excutable files.
+

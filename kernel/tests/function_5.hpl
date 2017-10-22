@@ -1,0 +1,17 @@
+#
+# $Id: function_5.hpl,v 1.1.1.1 2001/10/21 08:25:16 nicoo Exp $
+#
+
+c=function(b)
+{
+	a=3;
+	b+a;
+};
+
+c(2);
+
+if (! (c(2) == 5))
+	abort();
+
+quit;
+

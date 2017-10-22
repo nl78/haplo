@@ -1,0 +1,1057 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Nicolas LAURENT
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#: kernel/libhaplo/code.c:3553
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: haplo 0.9\n"
+"Report-Msgid-Bugs-To: nl@haplo.info\n"
+"POT-Creation-Date: 2009-04-08 00:28+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: kernel/haplo/hgetopt.c:142
+#, c-format
+msgid "Option `%s' is unknown.\n"
+msgstr ""
+
+#: kernel/haplo/hgetopt.c:162
+#, c-format
+msgid "Option `%s' expected value.\n"
+msgstr ""
+
+#: kernel/haplo/hgetopt.c:176
+#, c-format
+msgid "Option `%s' didn't expect value.\n"
+msgstr ""
+
+#: kernel/haplo/hgetopt.c:256
+msgid ""
+"`haplo' is a finite element analysis software. \n"
+"\n"
+msgstr ""
+
+#: kernel/haplo/hgetopt.c:257
+msgid ""
+"Usage: haplo [options] [filename]\n"
+"\n"
+msgstr ""
+
+#: kernel/haplo/hgetopt.c:258
+msgid "Options: \n"
+msgstr ""
+
+#: kernel/haplo/hgetopt.c:296
+msgid ""
+"\n"
+"Exemples:\n"
+msgstr ""
+
+#: kernel/haplo/hgetopt.c:297
+msgid "   haplo               Launch interactive haplo shell.\n"
+msgstr ""
+
+#: kernel/haplo/hgetopt.c:299
+msgid "   haplo file.hpl      Interpret `file.hpl' then exit.\n"
+msgstr ""
+
+#: kernel/haplo/hgetopt.c:301
+msgid ""
+"\n"
+"Report bugs to <nl@haplo.info>."
+msgstr ""
+
+#: kernel/haplo/main.c:123
+msgid "End of processing."
+msgstr ""
+
+#: kernel/haplo/main.c:147
+msgid "Add <optarg> to scripts search-path."
+msgstr ""
+
+#: kernel/haplo/main.c:149
+msgid "Add <optarg> to modules search-path."
+msgstr ""
+
+#: kernel/haplo/main.c:151
+msgid "Print compilation flags and exit."
+msgstr ""
+
+#: kernel/haplo/main.c:153
+msgid "Set <arg> as colors scheme."
+msgstr ""
+
+#: kernel/haplo/main.c:155
+msgid "Print configuration informations and exit."
+msgstr ""
+
+#: kernel/haplo/main.c:158
+msgid "Limit CPU usage to <optarg> seconds."
+msgstr ""
+
+#: kernel/haplo/main.c:161
+msgid "Print this message."
+msgstr ""
+
+#: kernel/haplo/main.c:163
+msgid "Print linkage flags and exit."
+msgstr ""
+
+#: kernel/haplo/main.c:165
+msgid "Limit memory usage to <optarg> Mb."
+msgstr ""
+
+#: kernel/haplo/main.c:167
+msgid "No welcome message."
+msgstr ""
+
+#: kernel/haplo/main.c:169
+msgid "Do not load init script."
+msgstr ""
+
+#: kernel/haplo/main.c:171
+msgid "Do load automatically files."
+msgstr ""
+
+#: kernel/haplo/main.c:173
+msgid "Print version informations and exit."
+msgstr ""
+
+#: kernel/haplo/main.c:236
+#, c-format
+msgid "Version............: %d.%d\n"
+msgstr ""
+
+#: kernel/haplo/main.c:238
+#, c-format
+msgid "Revision...........: %s\n"
+msgstr ""
+
+#: kernel/haplo/main.c:239
+#, c-format
+msgid "Build..............: #%d -- %s (%s)\n"
+msgstr ""
+
+#: kernel/haplo/main.c:241
+#, c-format
+msgid "OS.................: %s\n"
+msgstr ""
+
+#: kernel/haplo/main.c:242
+#, c-format
+msgid "Modules support....: "
+msgstr ""
+
+#: kernel/haplo/main.c:246
+msgid "None"
+msgstr ""
+
+#: kernel/haplo/main.c:249
+msgid "DL style"
+msgstr ""
+
+#: kernel/haplo/main.c:252
+msgid "DLD style"
+msgstr ""
+
+#: kernel/haplo/main.c:255
+msgid "WIN32 style"
+msgstr ""
+
+#: kernel/haplo/main.c:258 kernel/libhaplo/bt.c:423
+msgid "Unknown"
+msgstr ""
+
+#: kernel/haplo/main.c:260
+#, c-format
+msgid "i18n...............: "
+msgstr ""
+
+#: kernel/haplo/main.c:262
+#, c-format
+msgid "yes\n"
+msgstr ""
+
+#: kernel/haplo/main.c:264
+#, c-format
+msgid "i18n data directory: %s\n"
+msgstr ""
+
+#: kernel/haplo/main.c:269
+#, c-format
+msgid "Options............: %s\n"
+msgstr ""
+
+#: kernel/haplo/main.c:271
+#, c-format
+msgid "Module directory...: %s\n"
+msgstr ""
+
+#: kernel/haplo/main.c:274
+#, c-format
+msgid "Scripts directory..: %s"
+msgstr ""
+
+#: kernel/haplo/main.c:369
+msgid ""
+"Option `-colors' expected one of the following values:\n"
+"  `none'\tno colors at all\n"
+"  `ansi'\tuse simple ansi colors\n"
+"  `flash'\tuse all ansi colors\n"
+msgstr ""
+
+#: kernel/libhaplo/error.c:66
+msgid "Execution interrupted due to user request."
+msgstr ""
+
+#: kernel/libhaplo/error.c:69
+msgid "Missing `;' at the end of input."
+msgstr ""
+
+#: kernel/libhaplo/error.c:70
+#, c-format
+msgid "File `%s' should define function `%s'"
+msgstr ""
+
+#: kernel/libhaplo/error.c:71
+msgid "`break' statement not within loop."
+msgstr ""
+
+#: kernel/libhaplo/error.c:72
+msgid "`continue' statement not within loop."
+msgstr ""
+
+#: kernel/libhaplo/error.c:73 kernel/libhaplo/error.c:74
+msgid "`return' statement not within function definition."
+msgstr ""
+
+#: kernel/libhaplo/error.c:75
+#, c-format
+msgid "Variable `%s' undefined. Making a string."
+msgstr ""
+
+#: kernel/libhaplo/error.c:76 kernel/libhaplo/error.c:98
+#, c-format
+msgid "Shadowing function `%s'."
+msgstr ""
+
+#: kernel/libhaplo/error.c:77
+msgid "Missing closing `\"'."
+msgstr ""
+
+#: kernel/libhaplo/error.c:78
+#, c-format
+msgid "Char `%c' is ignored."
+msgstr ""
+
+#: kernel/libhaplo/error.c:79
+#, c-format
+msgid "Char `0x%x' is ignored."
+msgstr ""
+
+#: kernel/libhaplo/error.c:80
+msgid "Unexpected symbol"
+msgstr ""
+
+#: kernel/libhaplo/error.c:81
+#, c-format
+msgid "Symbol `%c' is simply ignored."
+msgstr ""
+
+#: kernel/libhaplo/error.c:84
+#, c-format
+msgid ""
+"Unrecoverable parse error (%s). If you think this\n"
+"  should not have happened, please submit a bug report to <bugs@haplo.info>."
+msgstr ""
+
+#: kernel/libhaplo/error.c:87 kernel/libhaplo/error.c:89
+msgid "Syntax error before this point."
+msgstr ""
+
+#: kernel/libhaplo/error.c:88
+msgid "Syntax error at end of input."
+msgstr ""
+
+#: kernel/libhaplo/error.c:90
+msgid "Incorrect rvalue in assignment."
+msgstr ""
+
+#: kernel/libhaplo/error.c:91
+msgid "Cannot clear this expression."
+msgstr ""
+
+#: kernel/libhaplo/error.c:92
+msgid "This keyword is not allowed infunction"
+msgstr ""
+
+#: kernel/libhaplo/error.c:93
+msgid "`include' keyword accepts only one argument"
+msgstr ""
+
+#: kernel/libhaplo/error.c:94
+msgid "Missing `;' after this point.Last instruction ignored."
+msgstr ""
+
+#: kernel/libhaplo/error.c:96 kernel/libhaplo/error.c:97
+msgid "Incorrect lvalue in assignment."
+msgstr ""
+
+#: kernel/libhaplo/error.c:99 kernel/libhaplo/error.c:101
+msgid "Missing `;' after this point."
+msgstr ""
+
+#: kernel/libhaplo/error.c:100
+msgid "Empty expression are not allowed."
+msgstr ""
+
+#: kernel/libhaplo/error.c:102
+#, c-format
+msgid "Undefined function `%s'."
+msgstr ""
+
+#: kernel/libhaplo/error.c:103
+msgid "Expecting expression after `,'. Insert `0.0'"
+msgstr ""
+
+#: kernel/libhaplo/error.c:104
+#, c-format
+msgid "Hashtable `%s' is not defined."
+msgstr ""
+
+#: kernel/libhaplo/error.c:105
+msgid "Expecting parameter name."
+msgstr ""
+
+#: kernel/libhaplo/error.c:106
+msgid "Keyword are not allowed as arameters."
+msgstr ""
+
+#: kernel/libhaplo/error.c:110
+#, c-format
+msgid "Object of type <%s> used as <boolean> in if statement."
+msgstr ""
+
+#: kernel/libhaplo/error.c:112
+#, c-format
+msgid "Object of type <%s> used as <string> in `include()'."
+msgstr ""
+
+#: kernel/libhaplo/error.c:114
+msgid "Too many neested `include()'."
+msgstr ""
+
+#: kernel/libhaplo/error.c:115
+#, c-format
+msgid "Cannot include file `%s': %s"
+msgstr ""
+
+#: kernel/libhaplo/error.c:116
+#, c-format
+msgid "Using object of type `%s' as loop condition"
+msgstr ""
+
+#: kernel/libhaplo/error.c:118
+msgid "Dangling reference detected."
+msgstr ""
+
+#: kernel/libhaplo/error.c:119
+#, c-format
+msgid "Cannot assign undefined value  to `%s'."
+msgstr ""
+
+#: kernel/libhaplo/error.c:120
+#, c-format
+msgid "Assignment impossible: try to apply `->' on  objet of type <%s>"
+msgstr ""
+
+#: kernel/libhaplo/error.c:122
+#, c-format
+msgid "Execution of this code needs %u parameter%s."
+msgstr ""
+
+#: kernel/libhaplo/error.c:123
+#, c-format
+msgid "Try to use object of type <%s> as a function."
+msgstr ""
+
+#: kernel/libhaplo/error.c:124
+#, c-format
+msgid "No instance of overloaded function `%s' matches the argument list."
+msgstr ""
+
+#: kernel/libhaplo/error.c:126
+#, c-format
+msgid "Execution of `%s' failed"
+msgstr ""
+
+#: kernel/libhaplo/error.c:127
+msgid "Indice of vector should be single number"
+msgstr ""
+
+#: kernel/libhaplo/error.c:128
+#, c-format
+msgid "Parameter #%lu of function `%s' should be named."
+msgstr ""
+
+#: kernel/libhaplo/error.c:129
+msgid "To many recursive calls. Virtual memory exhausted."
+msgstr ""
+
+#: kernel/libhaplo/error.c:131
+#, c-format
+msgid "Evaluation of argument #%hu does not produce any valid result."
+msgstr ""
+
+#: kernel/libhaplo/error.c:133
+#, c-format
+msgid "Applying `->' on object of type `%s'"
+msgstr ""
+
+#: kernel/libhaplo/error.c:134
+#, c-format
+msgid "Variable `%s' is undefined."
+msgstr ""
+
+#: kernel/libhaplo/error.c:135
+#, c-format
+msgid "Member `%s' does not exist."
+msgstr ""
+
+#: kernel/libhaplo/error.c:136
+#, c-format
+msgid "Try to use an objet of type <%s> as member name."
+msgstr ""
+
+#: kernel/libhaplo/error.c:137
+#, c-format
+msgid "Utilisation d'un objet de type `%s' nom membre d'une table"
+msgstr ""
+
+#: kernel/libhaplo/error.c:139
+msgid "Index out of bounds."
+msgstr ""
+
+#: kernel/libhaplo/error.c:140
+#, c-format
+msgid "Try to use an objet of type <%s> as indice of a vector."
+msgstr ""
+
+#: kernel/libhaplo/error.c:143
+msgid "Undefined error"
+msgstr ""
+
+#: kernel/libhaplo/error.c:357
+msgid "End."
+msgstr ""
+
+#: kernel/libhaplo/object.c:846
+msgid "Failed to register type with nul name."
+msgstr ""
+
+#: kernel/libhaplo/object.c:854
+#, c-format
+msgid "Failed to register type `%s' which is already registred."
+msgstr ""
+
+#: kernel/libhaplo/object.c:960 kernel/libhaplo/object.c:1003
+#: kernel/libhaplo/object.c:1010 kernel/libhaplo/object.c:1053
+#: kernel/libhaplo/object.c:1060 kernel/libhaplo/object.c:1067
+#, c-format
+msgid "Failed to register type `%s': symbol `%s' not found"
+msgstr ""
+
+#: kernel/libhaplo/object.c:1184
+msgid "Declared variables"
+msgstr ""
+
+#: kernel/libhaplo/object.c:1249
+msgid "List of object types curently supported"
+msgstr ""
+
+#: kernel/libhaplo/memory.c:221 kernel/libhaplo/memory.c:305
+#, c-format
+msgid "Fail to allocate %s (%s:%lu)"
+msgstr ""
+
+#: kernel/libhaplo/memory.c:236 kernel/libhaplo/memory.c:290
+#: kernel/libhaplo/memory.c:413
+msgid "Memory debugger unavailable (virtual memory exhausted)"
+msgstr ""
+
+#: kernel/libhaplo/memory.c:321
+#, c-format
+msgid "Freeing nul-pointer. (%s:%lu)"
+msgstr ""
+
+#: kernel/libhaplo/memory.c:335
+#, c-format
+msgid "Freeing memory at %p (%s:%lu)"
+msgstr ""
+
+#: kernel/libhaplo/memory.c:351
+#, c-format
+msgid "Freeing non-allocated memory at %p. (%s:%lu)"
+msgstr ""
+
+#: kernel/libhaplo/memory.c:378
+#, c-format
+msgid "Fail to re-allocate %s"
+msgstr ""
+
+#: kernel/libhaplo/memory.c:397
+#, c-format
+msgid "Re-allocating nul-pointer (%s:%lu)"
+msgstr ""
+
+#: kernel/libhaplo/memory.c:430
+#, c-format
+msgid "Reallocation unallocated memory at %p (%s:%lu)"
+msgstr ""
+
+#: kernel/libhaplo/memory.c:444
+#, c-format
+msgid "Fail to re-allocate %s (%s:%lu"
+msgstr ""
+
+#: kernel/libhaplo/memory.c:474
+#, c-format
+msgid "Unable to watch memory at %p"
+msgstr ""
+
+#: kernel/libhaplo/memory.c:506
+#, c-format
+msgid "Number of malloc()....: %d"
+msgstr ""
+
+#: kernel/libhaplo/memory.c:507
+#, c-format
+msgid "Number of free()......: %d"
+msgstr ""
+
+#: kernel/libhaplo/memory.c:508
+#, c-format
+msgid "Number of realloc()...: %d"
+msgstr ""
+
+#: kernel/libhaplo/memory.c:510
+#, c-format
+msgid "Maximal RSS...........: %s\n"
+msgstr ""
+
+#: kernel/libhaplo/memory.c:518
+msgid ""
+"|                                Memory leaks                                "
+"|"
+msgstr ""
+
+#: kernel/libhaplo/memory.c:522
+msgid ""
+"|                         Where                    |    Size    |   Pointer  "
+"|"
+msgstr ""
+
+#: kernel/libhaplo/memory.c:552
+msgid "No memory leaks."
+msgstr ""
+
+#: kernel/libhaplo/olist.c:81
+#, c-format
+msgid "List (%lu element%s)"
+msgstr ""
+
+#: kernel/libhaplo/olist.c:224
+msgid "Indice begin at 1."
+msgstr ""
+
+#: kernel/libhaplo/olist.c:235
+#, c-format
+msgid "Indice `%u' exceed size of the list."
+msgstr ""
+
+#: kernel/libhaplo/timer.c:131 kernel/libhaplo/timer.c:168
+msgid "Execution statistics unavailable."
+msgstr ""
+
+#: kernel/libhaplo/timer.c:270
+#, c-format
+msgid "%lu day%s %luh %lum %.2fs"
+msgstr ""
+
+#: kernel/libhaplo/timer.c:271 kernel/libhaplo/code.c:3553
+msgid "s"
+msgstr ""
+
+#: kernel/libhaplo/timer.c:274
+#, c-format
+msgid "%luh %lum %.2fs"
+msgstr ""
+
+#: kernel/libhaplo/timer.c:278
+#, c-format
+msgid "%lum %.2fs"
+msgstr ""
+
+#: kernel/libhaplo/timer.c:282
+#, c-format
+msgid "%.2fs"
+msgstr ""
+
+#: kernel/libhaplo/timer.c:285
+#, c-format
+msgid "< 0.01s"
+msgstr ""
+
+#: kernel/libhaplo/bt.c:149
+#, c-format
+msgid "\t from <%s>"
+msgstr ""
+
+#: kernel/libhaplo/bt.c:198
+#, c-format
+msgid "\t from <%s> (%s)"
+msgstr ""
+
+#: kernel/libhaplo/bt.c:199
+msgid "Static Function"
+msgstr ""
+
+#: kernel/libhaplo/bt.c:229
+#, c-format
+msgid "\tfrom <%s>"
+msgstr ""
+
+#: kernel/libhaplo/bt.c:307
+msgid "Illegal opcode."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:308
+msgid "Illegal operand."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:309
+msgid "Illegal addressing mode."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:310
+msgid "Illegal trap."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:311
+msgid "Privileged opcode."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:312
+msgid "Privileged register."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:313
+msgid "Coprocessor error."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:314
+msgid "Internal stack error."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:321
+msgid "Sent by kill, sigsend or raise."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:323
+msgid "Sent by the kernel."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:325
+msgid "Sent by sigqueue."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:326
+msgid "Sent by timer."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:327
+msgid "Mesq state changed."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:328
+msgid "AIO completed."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:330
+msgid "Queued SIGIO."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:338
+msgid "Integer divide by zero."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:339
+msgid "Integer overflow."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:340
+msgid "Floating point divide by zero."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:341
+msgid "Floating point overflow."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:342
+msgid "Floating point underflow."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:343
+msgid "Floating point inexact result."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:345
+msgid "Floating point invalid operation."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:346
+msgid "Subscript out of range."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:354
+#, c-format
+msgid "Address %p is not mapped to object."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:357
+#, c-format
+msgid "Invalid permissions for mapped object at %p."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:365
+#, c-format
+msgid "Invalid address alignment %p."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:368
+#, c-format
+msgid "Non-existant physical address %p."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:371
+#, c-format
+msgid "Object specific hardware error at %p."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:379
+msgid "Process breakpoint."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:380
+msgid "Process trace trap."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:387
+msgid "Child has exited."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:388
+msgid "Child was killed."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:389
+msgid "Child terminated abnormally."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:390
+msgid "Traced child has trapped."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:391
+msgid "Child has stopped."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:392
+msgid "Stopped child has continued."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:399
+msgid "Data input available."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:400
+msgid "Output buffers available."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:401
+msgid "Input message available."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:402
+msgid "I/O error."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:403
+msgid "High priority input available."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:404
+msgid "Device disconnected."
+msgstr ""
+
+#: kernel/libhaplo/bt.c:428
+msgid "Hangup"
+msgstr ""
+
+#: kernel/libhaplo/bt.c:431
+msgid "Interrupt"
+msgstr ""
+
+#: kernel/libhaplo/bt.c:434
+msgid "Quit"
+msgstr ""
+
+#: kernel/libhaplo/bt.c:437
+msgid "Illegal instruction"
+msgstr ""
+
+#: kernel/libhaplo/bt.c:440
+msgid "Trace/breakpoint trap"
+msgstr ""
+
+#: kernel/libhaplo/bt.c:442
+msgid "Abort"
+msgstr ""
+
+#: kernel/libhaplo/bt.c:444
+msgid "Bus error"
+msgstr ""
+
+#: kernel/libhaplo/bt.c:447
+msgid "Floating point exception"
+msgstr ""
+
+#: kernel/libhaplo/bt.c:450
+msgid "User-defined signal 1"
+msgstr ""
+
+#: kernel/libhaplo/bt.c:453
+msgid "Invalid memory reference"
+msgstr ""
+
+#: kernel/libhaplo/bt.c:456
+msgid "User-defined signal 2"
+msgstr ""
+
+#: kernel/libhaplo/bt.c:459
+msgid "Broken pipe"
+msgstr ""
+
+#: kernel/libhaplo/bt.c:462
+msgid "Timer signal"
+msgstr ""
+
+#: kernel/libhaplo/bt.c:465
+msgid "Termination signal"
+msgstr ""
+
+#: kernel/libhaplo/bt.c:468
+msgid "Child stopped or terminated"
+msgstr ""
+
+#: kernel/libhaplo/bt.c:471
+msgid "tty input for background process"
+msgstr ""
+
+#: kernel/libhaplo/bt.c:474
+msgid "tty output for background process"
+msgstr ""
+
+#: kernel/libhaplo/bt.c:494
+msgid "Fatal error: "
+msgstr ""
+
+#: kernel/libhaplo/bt.c:496
+#, c-format
+msgid "Caught signal %d (%s): "
+msgstr ""
+
+#: kernel/libhaplo/bt.c:498
+msgid "No explanations."
+msgstr ""
+
+#: kernel/libhaplo/code.c:3553
+#, c-format
+msgid "Code (%d Op%s)"
+msgstr ""
+
+#: kernel/libhaplo/module.c:236
+#, c-format
+msgid "Failed in loading: %s"
+msgstr ""
+
+#: kernel/libhaplo/module.c:507
+#, c-format
+msgid "Failed in initializing module `%s'."
+msgstr ""
+
+#: kernel/libhaplo/module.c:523
+#, c-format
+msgid "Library `%s' (%s) is not a haplo-module."
+msgstr ""
+
+#: kernel/libhaplo/module.c:593
+#, c-format
+msgid "Module `%s' is already loaded."
+msgstr ""
+
+#: kernel/libhaplo/module.c:655
+#, c-format
+msgid "Failed in loading module `%s'."
+msgstr ""
+
+#: kernel/libhaplo/module.c:751
+#, c-format
+msgid "Failure in unloading `%s': %s"
+msgstr ""
+
+#: kernel/libhaplo/utils.c:327
+#, c-format
+msgid "Overflow: `%.8g' is rounded to `%.8g'"
+msgstr ""
+
+#: kernel/libhaplo/utils.c:332
+#, c-format
+msgid "Underflow: `%.8g' is rounded to `%.8g'"
+msgstr ""
+
+#: kernel/libhaplo/utils.c:352
+#, c-format
+msgid "Underflow: `%.8g' is rounded to `%u'"
+msgstr ""
+
+#: kernel/libhaplo/utils.c:358
+#, c-format
+msgid "Overflow: `%.8g' is rounded to `%u'"
+msgstr ""
+
+#: kernel/libhaplo/utils.c:364
+#, c-format
+msgid "`%.8g' is rounded to `%u'"
+msgstr ""
+
+#: kernel/libhaplo/utils.c:381 kernel/libhaplo/utils.c:409
+#, c-format
+msgid "Underflow: `%e' is rounded to `%u'"
+msgstr ""
+
+#: kernel/libhaplo/utils.c:386 kernel/libhaplo/utils.c:414
+#, c-format
+msgid "Overflow: `%e' is rounded to `%u'"
+msgstr ""
+
+#: kernel/libhaplo/utils.c:392 kernel/libhaplo/utils.c:420
+#, c-format
+msgid "`%e' is rounded to `%u'"
+msgstr ""
+
+#: kernel/libhaplo/utils.c:437
+#, c-format
+msgid "Underflow: `%e' is rounded to `%lu'"
+msgstr ""
+
+#: kernel/libhaplo/utils.c:442
+#, c-format
+msgid "Overflow: `%e' is rounded to `%lu'"
+msgstr ""
+
+#: kernel/libhaplo/utils.c:448
+#, c-format
+msgid "`%e' is rounded to `%lu'"
+msgstr ""
+
+#: kernel/libhaplo/help.c:1039
+#, c-format
+msgid "Binary operator `%s'"
+msgstr ""
+
+#: kernel/libhaplo/help.c:1041
+#, c-format
+msgid "Unary operator `%s'"
+msgstr ""
+
+#: kernel/libhaplo/help.c:1043
+#, c-format
+msgid "Function `%s'"
+msgstr ""
+
+#: kernel/libhaplo/help.c:1121
+msgid "There's no help message."
+msgstr ""
+
+#: kernel/libhaplo/help.c:1139
+#, c-format
+msgid "There's no help message associated with `%s'."
+msgstr ""
+
+#: parser.y:1738
+#, c-format
+msgid "Cannot execute `%s': %s"
+msgstr ""
+
+#: parser.y:1760
+#, c-format
+msgid "Cannot load initilization file (%s)"
+msgstr ""
+
+#: parser.y:1802
+msgid "Interpreter status"
+msgstr ""
+
+#: parser.y:2045
+msgid "Input will be ignored until next `;'"
+msgstr ""
+
+#: parser.y:2505
+msgid "this file isn't a text file."
+msgstr ""
+
+#: kernel/libhaplo/init.c:228
+msgid "La fonction use() n'est pas disponible dans cette configuration."
+msgstr ""
+
+#: kernel/libhaplo/func.c:272
+msgid "Failed to register function with nul name."
+msgstr ""
+
+#: kernel/libhaplo/func.c:278
+#, c-format
+msgid "%s[%s]: pointer-to-function is nil."
+msgstr ""
+
+#: kernel/libhaplo/func.c:285
+#, c-format
+msgid "%s[%s]: too many parameters."
+msgstr ""
+
+#: kernel/libhaplo/func.c:294
+#, c-format
+msgid "%s[%s]: argument #%d has unreconized type."
+msgstr ""
+
+#: kernel/libhaplo/func.c:303
+#, c-format
+msgid "%s[%s]: cannot protect void result."
+msgstr ""
+
+#: kernel/libhaplo/func.c:315
+#, c-format
+msgid "%s[%s]: type <%s> lacks of copy operator."
+msgstr ""
+
+#: kernel/libhaplo/func.c:352
+#, c-format
+msgid "Registration of function `%s' failed."
+msgstr ""

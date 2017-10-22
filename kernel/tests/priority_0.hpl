@@ -1,0 +1,10 @@
+#
+# $Id: priority_0.hpl,v 1.1.1.1 2001/10/21 08:25:16 nicoo Exp $
+#
+
+a=2+2*3;
+
+if (! a == 8)
+	abort();
+
+quit;

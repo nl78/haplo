@@ -1,0 +1,9 @@
+
+
+NOTALIST="coucou";
+INDICE=1;
+
+NOTALIST->INDICE;
+
+
+quit;

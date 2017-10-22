@@ -1,0 +1,12 @@
+# Test loading of <Mechanics> plugin.
+
+use("elements");
+use();
+
+if (! isused("elements"))
+	abort;
+
+quit;
+
+1
+###1

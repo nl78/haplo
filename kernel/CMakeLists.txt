@@ -1,0 +1,3 @@
+ADD_SUBDIRECTORY (haplo)
+ADD_SUBDIRECTORY (include)
+ADD_SUBDIRECTORY (libhaplo)

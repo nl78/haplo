@@ -1,0 +1,63 @@
+#
+# $Id: renum_2.hpl,v 1.2 2003/08/30 13:45:21 nicoo Exp $
+#
+
+use("fem");
+
+# Define a function that computes unconstrained GSM
+gsm=function(m)
+{
+	stiffness(problem(m, conditions(), loading()));
+};
+
+
+ma=meshing_inline();
+#!D 1
+# Nodes
+#!N 1 1
+#!N 2 2
+#!N 3 3
+#!N 4 4 
+#!N 5 5
+#!N 6 6
+#!N 7 7
+#!N 8 8
+#!N 9 9
+#!N 10 10
+#!M 1 2 7 2
+#!M 2 2 2 4
+#!M 3 2 2 1
+#!M 4 2 4 1
+#!M 5 2 4 10
+#!M 6 2 4 9
+#!M 7 2 3 1
+#!M 8 2 9 10
+#!M 9 2 3 8
+#!M 10 2 3 5
+#!M 11 2 1 5
+#!M 12 2 1 6
+#!M 13 2 9 6
+#!M 14 2 10 6
+#!M 15 2 8 5
+#!M 16 2 5 6
+#!X
+
+print(ma);
+renum(ma);
+print(ma);
+renum(ma, 10);
+print(ma);
+mo=model(ma);
+mat=material();
+set(mat, "E", 1);
+pro=property();
+set(pro, "S", 1);
+set(mo, mat);
+set(mo, pro);
+
+K=gsm(mo);
+profile(K);
+
+1;
+quit;
+###1

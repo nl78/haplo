@@ -1,0 +1,14 @@
+#
+# $Id: vector_6.hpl,v 1.2 2002/02/02 13:35:02 nicoo Exp $
+#
+
+a=function(b)
+{
+	[ b, b ];
+};
+
+((a(a))->1)(1);
+quit;
+
+
+###List (2 elements)

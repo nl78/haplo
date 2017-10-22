@@ -1,0 +1,6 @@
+
+
+2(); # number cannot be used as function!
+
+
+quit;

@@ -1,0 +1,108 @@
+use("elements");
+
+N=8;
+R0=1;
+R1=2;
+PI=atan(1)*4;
+
+alpha=2*PI/N;
+R12=(R1+R0)/2;
+
+ma=meshing(2);
+
+int=group_node();
+ext=group_node();
+n=0;
+for(i=0; i<N; i=i+1)
+{
+	a1=i*alpha;
+
+	a5=(i+1)*alpha;
+
+	a3=(a1+a5)/2;
+
+	a2=(2*a1+a5)/3;
+	a4=(a1+2*a5)/3;
+
+	node_add(ma, [ R0 *cos(a1), R0 *sin(a1) ]);
+	node_add(ma, [ R12*cos(a1), R12*sin(a1) ]);
+	node_add(ma, [ R1 *cos(a1), R1 *sin(a1) ]);
+
+	node_add(ma, [ R12*cos(a3), R12*sin(a3) ]);
+	node_add(ma, [ R1 *cos(a2), R1 *sin(a2) ]);
+	node_add(ma, [ R1 *cos(a4), R1 *sin(a4) ]);
+
+	add(int, [ n+1 ]);
+	add(ext, [ n+3, n+5, n+6 ]);
+
+	n=n+6;
+}
+
+n=0;
+for(i=0; i<N; i=i+1)
+{
+	if (i < (N-1))
+	{
+		mesh_add(ma, [ n+1, n+4, n+2 ]);
+		mesh_add(ma, [ n+2, n+4, n+5 ]);
+		mesh_add(ma, [ n+2, n+5, n+3 ]);
+		mesh_add(ma, [ n+4, n+6, n+5 ]);
+
+		mesh_add(ma, [ n+1, n+7, n+4 ]);
+		mesh_add(ma, [ n+7, n+8, n+4 ]);
+		mesh_add(ma, [ n+8, n+6, n+4 ]);
+		mesh_add(ma, [ n+8, n+9, n+6 ]);
+	} else {
+		mesh_add(ma, [ n+1, n+4, n+2 ]);
+		mesh_add(ma, [ n+2, n+4, n+5 ]);
+		mesh_add(ma, [ n+2, n+5, n+3 ]);
+		mesh_add(ma, [ n+4, n+6, n+5 ]);
+
+		mesh_add(ma, [ n+1, 1, n+4 ]);
+		mesh_add(ma, [ 1, 2, n+4 ]);
+		mesh_add(ma, [ 2, n+6, n+4 ]);
+		mesh_add(ma, [ 2, 3, n+6 ]);
+	}
+
+	n=n+6;
+}
+
+
+#print(ma);
+#TODO: Fix this!
+#renum(ma);
+
+mo=model(ma);
+
+BC=bc(ext, "DX=0") + bc(int, "DX");
+
+
+lo=loading(group_mesh(ma), "FX=2");
+
+#print(lo);
+
+#print(BC);
+P=problem(mo, BC, lo);
+dof(P, 105);
+K=stiffness(P);
+
+F=loading(P);
+
+phi=solve_ldlt(K, F);
+
+get(phi, dof(P, "DX1"));
+get(phi, dof(P, "DX11"));
+get(phi, dof(P, "DX3"));
+
+
+f=function(r)
+{
+	-r*r/2+R1*R1/2;
+};
+
+
+f(R1);
+f(R0);
+
+quit;
+###1

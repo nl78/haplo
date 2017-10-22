@@ -1,0 +1,4 @@
+A=matrix("/home/nicoo/Matrix/s3dkt3m2.mtx");
+b=vector(size(A));
+x=solve_ldlt(A,b);
+norm(A*x-b);

@@ -1,0 +1,28 @@
+#
+# $Id: renum_3.hpl,v 1.1 2003/08/30 13:48:39 nicoo Exp $
+#
+
+use("fem");
+
+ma=meshing_inline();
+#!D 1
+# Nodes
+#!N 1 1
+#!N 2 2
+#!N 3 3
+#!N 4 4
+#!N 5 5
+#!M 1 2 2 1
+#!M 2 2 1 3
+#!M 3 2 4 5
+#!X
+
+
+print(ma);
+renum(ma);
+print(ma);
+
+1;
+
+quit;
+###1

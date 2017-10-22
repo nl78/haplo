@@ -1,0 +1,22 @@
+#
+# $Id: function_1.hpl,v 1.1.1.1 2001/10/21 08:25:16 nicoo Exp $
+#
+
+a=function(b)
+{
+	2*b;
+};
+
+b=function(b)
+{
+	b+a(b);
+};
+
+#clear(a);
+
+a=b(b(b(b(3))));
+
+if (! (a==243))
+	abort();
+
+quit;

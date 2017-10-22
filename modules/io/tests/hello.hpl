@@ -1,0 +1,7 @@
+use("io");
+use();
+type();
+
+file = open("toto", "UNV");
+f = filter(file);
+clear(file);

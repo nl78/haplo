@@ -1,0 +1,77 @@
+use("elements");
+
+#
+# Create a meshing
+#
+
+MESHING=meshing(3);
+
+N=7;
+node_add(MESHING, [0]);
+for(i = 1; i <= N; i = i+1)
+{
+	node_add(MESHING, [2*i]);
+	mesh_add(MESHING, [i, i+1]);
+}
+
+
+#
+# Create a model from this meshing with default elements
+#
+MODEL=model(MESHING);
+
+#
+# Apply properties to theses elements
+#
+MAT=material();
+set(MAT, "E", 1);
+set(MAT, "nu", 0.3);
+print(MAT);
+
+PRO=property();
+set(PRO, "S", 1);
+set(PRO, "Iz", 1);
+set(PRO, "Iy", 1);
+set(PRO, "J", 1);
+print(PRO);
+
+set(MODEL, MAT);
+set(MODEL, PRO);
+
+
+#
+# Boundary conditions
+#
+
+BC=bc("DX1=-1");
+print(BC);
+
+#
+# Loading
+#
+LOAD=force("FX" + (N+1) + "=1.0");
+print(LOAD);
+
+#
+# Global Stiffness Matrix 
+#
+P=problem(MODEL, BC, LOAD);
+K=stiffness(P);
+
+
+#
+# Solve the linear system 
+#
+U=solve_ldlt(K, loading(P));
+
+#
+# Display results
+#
+#print(U);
+dx=get(U, dof(P, "DX" + (N+1)));
+(dx-1)/(N-1);
+
+
+quit;
+###2
+

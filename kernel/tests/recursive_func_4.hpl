@@ -1,0 +1,21 @@
+#
+# $Id: recursive_func_4.hpl,v 1.1.1.1 2001/10/21 08:25:16 nicoo Exp $
+#
+
+
+
+fact=function(n)
+{
+	fun=function(nnn) { { nn=nnn; if (nn>n) nn*fun(nn-1); else 1;  } };
+};
+
+
+print(fact(2));
+
+
+if (! fact(2)(4) == 12)
+	abort();
+
+
+quit;
+

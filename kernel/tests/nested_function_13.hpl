@@ -1,0 +1,18 @@
+#
+# $Id: nested_function_13.hpl,v 1.1.1.1 2001/10/21 08:25:16 nicoo Exp $
+#
+# triple stack call
+#
+a=function(a, b)
+{
+	function(c)
+	{
+		a+b+c;
+	};
+};
+b=a(1,2);
+
+if (! (b(b(2)+1+b(b(4))) == 19))
+	abort();
+quit;
+

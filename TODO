@@ -1,0 +1,96 @@
+------------------------------------------------------------------------------
+                                 R O A D M A P
+------------------------------------------------------------------------------
+
+
+                                   +-----+
+                                   | 0.6 |
+                                   +-----+
+- Major Changes:
+
+	Kernel
+		* Formated comments 					[OK]
+
+	FEM
+		* Renumbering (reverse Cuthill Mac Kee)			[OK]
+		* local to global numbering function 			[OK]
+		* Group support (load/save/add) 			[OK]
+		* meshing_add() 					[OK]
+
+
+
+                                   +-----+
+                                   | 0.7 |
+                                   +-----+
+- Major Changes:
+
+	FEM
+		* lagrangian multipliers for BC 			[OK]
+
+
+                                   +-----+
+                                   | 0.8 |
+                                   +-----+
+- Major Changes
+
+		* formatted plublic headers (cosmetic)			[OK]
+		* only one configure script				[OK]
+
+	FEM
+		* support loading					[OK]
+		* split fem and elements' implementation		[OK]
+		  -> libfem / libmechanics
+	
+
+                                   +-----+
+                                   | 0.9 |
+                                   +-----+
+- Major Changes
+
+		* document functions in doc/ dir.                       [  ]
+
+	kernel  	
+		* tutorial						[  ]
+
+	Mechanics
+		* major cleanup                                         [  ]
+		* more element types (3D linear/3D quadratic)		[  ]
+
+	XHaplo
+		* preliminary implementation				[  ]
+
+	FEM
+		* clean up (page->list)					[OK]
+		* threaded solver                                       [  ]
+
+                                   +-----+
+                                   | 1.0 |
+                                   +-----+
+- Major Changes
+
+		* IRIX							[OK]
+		* Solaris port						[OK]
+		* HP/UX port (need a platform)				[  ]
+		* global clean up					[  ]
+		* eventually win32 port? (need a platform)		[  ]
+		* debian packaging					[OK]
+		* WWW up-to-date!					[  ]
+		* binary manpage					[  ]
+		* i18n (kernel, plugins and XHaplo			[  ]
+
+	FEM/Mechanics
+		* tutorial						[  ]
+		* reference manual (french only)			[  ]
+
+	XHaplo
+		* basic post-processing					[  ]
+
+
+------------------------------------------------------------------------------
+                                    T O D O
+------------------------------------------------------------------------------
+
+
+improve kernel/test
+[ ] parser.y::1966: unused locp
+[ ] check hash default size in meshing
